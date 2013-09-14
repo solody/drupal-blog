@@ -6,19 +6,6 @@
  */
 
 /**
- * Implements hook_node_info().
- */
-function blog_node_info() {
-  return array(
-    'blog' => array(
-      'name' => t('Blog entry'),
-      'base' => 'blog',
-      'description' => t('Use for multi-user blogs. Every user gets a personal blog.'),
-    )
-  );
-}
-
-/**
  * Implements hook_user_view().
  */
 function blog_user_view($account) {
@@ -27,7 +14,7 @@ function blog_user_view($account) {
       '#type' => 'user_profile_item',
       '#title' => t('Blog'),
       // l() escapes the attributes, so we should not escape !username here.
-      '#markup' => l(t('View recent blog entries'), "blog/$account->uid", array('attributes' => array('title' => t("Read !username's latest blog entries.", array('!username' => user_format_name($account)))))),
+      '#markup' => l(t('View recent blog entries'), "blog/{$account->id()}", array('attributes' => array('title' => t("Read !username's latest blog entries.", array('!username' => user_format_name($account)))))),
       '#attributes' => array('class' => array('blog')),
     );
   }
@@ -139,7 +126,6 @@ function blog_menu() {
  */
 function blog_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   global $user;
-
   // Add action link to 'node/add/blog' on 'blog' page.
   if ($root_path == 'blog') {
     $item = menu_get_item('node/add/blog');
@@ -152,7 +138,7 @@ function blog_menu_local_tasks_alter(&$data, $router_item, $root_path) {
     }
   }
   // Provide a helper action link to the author on the 'blog/%' page.
-  elseif ($root_path == 'blog/%' && $router_item['page_arguments'][0]->uid == $user->uid) {
+  elseif ($root_path == 'blog/%' && $router_item['page_arguments'][0]->id() == $user->id()) {
     $data['actions']['output']['blog'] = array(
       '#theme' => 'menu_local_action',
     );
@@ -173,17 +159,17 @@ function blog_page_user_access($account) {
   // The visitor must be able to access the site's content.
   // For a blog to 'exist' the user must either be able to
   // create new blog entries, or it must have existing posts.
-  return $account->uid && user_access('access content') && (user_access('create blog content', $account) || _blog_post_exists($account));
+  return $account->id() && user_access('access content') && (user_access('create blog content', $account) || _blog_post_exists($account));
 }
 
 /**
  * Helper function to determine if a user has blog posts already.
  */
 function _blog_post_exists($account) {
-  return (bool)db_select('node', 'n')
+  return (bool)db_select('node_field_data', 'n')
     ->fields('n', array('nid'))
     ->condition('type', 'blog')
-    ->condition('uid', $account->uid)
+    ->condition('uid', $account->id())
     ->condition('status', 1)
     ->range(0, 1)
     ->addTag('node_access')

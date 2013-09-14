@@ -1,0 +1,19 @@
+type: blog
+uuid: 4ec995f3-1209-42a2-b902-2f047607a531
+name: 'Blog page'
+description: 'Use for multi-user blogs. Every user gets a personal blog.'
+help: ''
+has_title: '1'
+title_label: Title
+settings:
+  node:
+    preview: '1'
+    options:
+      status: status
+      # Not promoted to front page.
+      promote: '0'
+      sticky: '0'
+      revision: '0'
+    submitted: '1'
+status: '1'
+langcode: en
