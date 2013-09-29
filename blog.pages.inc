@@ -7,34 +7,45 @@
 
 /**
  * Menu callback; displays a Drupal page containing recent blog entries of a given user.
- * @todo Refactor the listing pages to use Views in core.
+ * @todo Provide a Views alternative for when Views are enabled.
+ * @todo Refactor this function into a Controller when routing is upgraded for D8.
  */
 function blog_page_user($account) {
   global $user;
 
+  //@todo drupal_set_title is deprecated for Drupal 8.
   drupal_set_title($title = t("@name's blog", array('@name' => user_format_name($account))), PASS_THROUGH);
 
   $build = array();
 
   $query = db_select('node_field_data', 'n');
-  // This query will limit the number of nodes returned based on the range, note
-  // that the original D7 verstion used a limit and added a pager. In the current
-  // D8 state the listing pages have no pager.
-  $nids = $query
+  $query->addTag('node_access');
+  $query->condition('type','blog');
+  $query->condition('status',1);
+  $query ->condition('uid', $account->id());
+  
+  $count_query = clone $query;
+  $count_query->addExpression('Count(n.nid)');
+
+  $paged_query = $query->extend('Drupal\Core\Database\Query\PagerSelectExtender');
+  $paged_query->limit(variable_get('default_nodes_main', 10));
+  $paged_query->setCountQuery($count_query);
+
+  $nids = $paged_query
     ->fields('n', array('nid', 'sticky', 'created'))
     ->condition('type', 'blog')
-    ->condition('uid', $account->id())
-    ->condition('status', 1)
     ->orderBy('sticky', 'DESC')
     ->orderBy('created', 'DESC')
-    ->range(0, variable_get('default_nodes_main', 10))
-    ->addTag('node_access')
     ->execute()
     ->fetchCol();
 
   if (!empty($nids)) {
     $nodes = node_load_multiple($nids);
-    $build += node_view_multiple($nodes);
+    $build['nodes']= node_view_multiple($nodes);
+    $build['pager'] = array(
+      '#theme' => 'pager',
+      '#weight' => 5,
+    );
   }
   else {
     if ($account->id() == $user->id()) {
@@ -51,30 +62,40 @@ function blog_page_user($account) {
 
 /**
  * Menu callback; displays a Drupal page containing recent blog entries of all users.
- * @todo Refactor the listing pages to use Views in core.
+ * @todo Provide a Views alternative when Views are enabled.
+ * @todo Refactory this function into a controller when routing is updated for D8.
  */
 function blog_page_last() {
   global $user;
   $build = array();
 
   $query = db_select('node_field_data', 'n');
-  // This query will limit the number of nodes returned based on the range, note 
-  // that the original D7 verstion used a limit and added a pager. In the current
-  // D8 state the listing pages have no pager.
-  $nids = $query
+  $query->addTag('node_access');
+  $query->condition('type','blog');
+  $query->condition('status',1);
+
+  $count_query = clone $query;
+  $count_query->addExpression('Count(n.nid)');
+  
+  $paged_query = $query->extend('Drupal\Core\Database\Query\PagerSelectExtender');
+  $paged_query->limit(variable_get('default_nodes_main', 10));
+  $paged_query->setCountQuery($count_query);
+
+  $nids = $paged_query
     ->fields('n', array('nid', 'sticky', 'created'))
-    ->condition('type', 'blog')
-    ->condition('status', 1)
     ->orderBy('sticky', 'DESC')
     ->orderBy('created', 'DESC')
     ->range(0, variable_get('default_nodes_main', 10))
-    ->addTag('node_access')
     ->execute()
     ->fetchCol();
 
   if (!empty($nids)) {
     $nodes = node_load_multiple($nids);
-    $build += node_view_multiple($nodes);
+    $build['nodes'] = node_view_multiple($nodes);
+    $build['pager'] = array(
+      '#theme' => 'pager',
+      '#weight' => 5,
+    );
   }
   else {
     drupal_set_message(t('No blog entries have been created.'));
