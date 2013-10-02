@@ -5,16 +5,18 @@
  * Page callback file for the blog module.
  */
 
+use Drupal\user\Entity\User;
+
 /**
  * Menu callback; displays a Drupal page containing recent blog entries of a given user.
  * @todo Provide a Views alternative for when Views are enabled.
  * @todo Refactor this function into a Controller when routing is upgraded for D8.
  */
-function blog_page_user($account) {
+function blog_page_user(User $account) {
   global $user;
 
   //@todo drupal_set_title is deprecated for Drupal 8.
-  drupal_set_title($title = t("@name's blog", array('@name' => user_format_name($account))), PASS_THROUGH);
+  drupal_set_title($title = t("@name's blog", array('@name' => $account->getUsername())), PASS_THROUGH);
 
   $build = array();
 
@@ -28,7 +30,7 @@ function blog_page_user($account) {
   $count_query->addExpression('Count(n.nid)');
 
   $paged_query = $query->extend('Drupal\Core\Database\Query\PagerSelectExtender');
-  $paged_query->limit(variable_get('default_nodes_main', 10));
+  $paged_query->limit(Drupal::config('node.settings')->get('items_per_page'));
   $paged_query->setCountQuery($count_query);
 
   $nids = $paged_query
@@ -55,7 +57,7 @@ function blog_page_user($account) {
       drupal_set_message(t('!author has not created any blog entries.', array('!author' => theme('username', array('account' => $account)))));
     }
   }
-  drupal_add_feed('blog/' . $account->id() . '/feed', t('RSS - !title', array('!title' => $title)));
+  drupal_add_feed('/blog/' . $account->id() . '/feed', t('RSS - !title', array('!title' => $title)));
 
   return $build;
 }
@@ -66,7 +68,7 @@ function blog_page_user($account) {
  * @todo Refactory this function into a controller when routing is updated for D8.
  */
 function blog_page_last() {
-  global $user;
+
   $build = array();
 
   $query = db_select('node_field_data', 'n');
@@ -78,14 +80,13 @@ function blog_page_last() {
   $count_query->addExpression('Count(n.nid)');
   
   $paged_query = $query->extend('Drupal\Core\Database\Query\PagerSelectExtender');
-  $paged_query->limit(variable_get('default_nodes_main', 10));
+  $paged_query->limit(Drupal::config('node.settings')->get('items_per_page'));
   $paged_query->setCountQuery($count_query);
 
   $nids = $paged_query
     ->fields('n', array('nid', 'sticky', 'created'))
     ->orderBy('sticky', 'DESC')
     ->orderBy('created', 'DESC')
-    ->range(0, variable_get('default_nodes_main', 10))
     ->execute()
     ->fetchCol();
 
@@ -108,7 +109,7 @@ function blog_page_last() {
 /**
  * Menu callback; displays an RSS feed containing recent blog entries of a given user.
  */
-function blog_feed_user($account) {
+function blog_feed_user(User $account) {
 
   $nids = db_select('node_field_data', 'n')
     ->fields('n', array('nid', 'created'))
@@ -116,15 +117,15 @@ function blog_feed_user($account) {
     ->condition('uid', $account->id())
     ->condition('status', 1)
     ->orderBy('created', 'DESC')
-    ->range(0, variable_get('feed_default_items', 10))
+    ->range(0, Drupal::config('node.settings')->get('items_per_page'))
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
 
-  $channel['title'] = t("!name's blog", array('!name' => user_format_name($account)));
+  $channel['title'] = t("!name's blog", array('!name' => $account->getUsername()));
   $channel['link'] = url('blog/' . $account->id(), array('absolute' => TRUE));
 
-  node_feed($nids, $channel);
+  return node_feed($nids, $channel);
 }
 
 /**
@@ -136,13 +137,13 @@ function blog_feed_last() {
     ->condition('type', 'blog')
     ->condition('status', 1)
     ->orderBy('created', 'DESC')
-    ->range(0, variable_get('feed_default_items', 10))
+    ->range(0, Drupal::config('node.settings')->get('items_per_page'))
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
 
-  $channel['title'] = t('!site_name blogs', array('!site_name' => variable_get('site_name', 'Drupal')));
+  $channel['title'] = t('!site_name - blogs', array('!site_name' => Drupal::config('system.site')->get('name')));
   $channel['link'] = url('blog', array('absolute' => TRUE));
 
-  node_feed($nids, $channel);
+  return node_feed($nids, $channel);
 }
