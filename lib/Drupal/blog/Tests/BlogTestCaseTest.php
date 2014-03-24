@@ -5,10 +5,21 @@
  * Tests for blog.module.
  */
 
-class BlogTestCase extends DrupalWebTestCase {
+namespace Drupal\blog\Tests;
+
+use Drupal\simpletest\WebTestBase;
+
+class BlogTestCaseTest extends WebTestBase {
   protected $big_user;
   protected $own_user;
   protected $any_user;
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public static $modules = array('block', 'blog');
 
   public static function getInfo() {
     return array(
@@ -22,11 +33,13 @@ class BlogTestCase extends DrupalWebTestCase {
    * Enable modules and create users with specific permissions.
    */
   function setUp() {
-    parent::setUp('blog');
+    parent::setUp();
     // Create users.
     $this->big_user = $this->drupalCreateUser(array('administer blocks'));
-    $this->own_user = $this->drupalCreateUser(array('create blog content', 'edit own blog content', 'delete own blog content'));
-    $this->any_user = $this->drupalCreateUser(array('create blog content', 'edit any blog content', 'delete any blog content', 'access administration pages'));
+    $this->own_user = $this->drupalCreateUser(array('create blog content', 'edit own blog content', 'delete own blog con
+tent'));
+    $this->any_user = $this->drupalCreateUser(array('create blog content', 'edit any blog content', 'delete any blog con
+tent', 'access administration pages'));
   }
 
   /**
@@ -67,12 +80,12 @@ class BlogTestCase extends DrupalWebTestCase {
     // Enable the recent blog block.
     $edit = array();
     $edit['blocks[blog_recent][region]'] = 'sidebar_second';
-    $this->drupalPost('admin/structure/block', $edit, t('Save blocks'));
+    $this->drupalPostForm('admin/structure/block', $edit, t('Save blocks'));
     $this->assertResponse(200);
     // Verify ability to change number of recent blog posts in block.
     $edit = array();
     $edit['blog_block_count'] = 5;
-    $this->drupalPost('admin/structure/block/manage/blog/recent/configure', $edit, t('Save block'));
+    $this->drupalPostForm('admin/structure/block/manage/blog/recent/configure', $edit, t('Save block'));
     $this->assertEqual(variable_get('blog_block_count', 10), 5, t('Number of recent blog posts changed.'));
 
     // Do basic tests for each user.
@@ -165,11 +178,11 @@ class BlogTestCase extends DrupalWebTestCase {
       $langcode = LANGUAGE_NONE;
       $edit["title"] = 'node/' . $node->nid;
       $edit["body[$langcode][0][value]"] = $this->randomName(256);
-      $this->drupalPost('node/' . $node->nid . '/edit', $edit, t('Save'));
+      $this->drupalPostForm('node/' . $node->nid . '/edit', $edit, t('Save'));
       $this->assertRaw(t('Blog entry %title has been updated.', array('%title' => $edit["title"])), t('Blog node was edited'));
 
       // Delete blog node.
-      $this->drupalPost('node/' . $node->nid . '/delete', array(), t('Delete'));
+      $this->drupalPostForm('node/' . $node->nid . '/delete', array(), t('Delete'));
       $this->assertResponse($response);
       $this->assertRaw(t('Blog entry %title has been deleted.', array('%title' => $edit["title"])), t('Blog node was deleted'));
     }
