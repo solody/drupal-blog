@@ -139,10 +139,10 @@ class BlogLister implements BlogListerInterface {
         drupal_set_message(t('You have not created any blog entries.'));
       }
       else {
-        drupal_set_message(t('!author has not created any blog entries.', array('!author' => theme('username', array('account' => $account)))));
+        drupal_set_message(t('!author has not created any blog entries.', array('!author' => $user->getUsername())));
       }
     }
-    drupal_add_feed('/blog/' . $user->id() . '/feed', t('RSS - !title', array('!title' => $this->account->getUsername() . t("'s blog"))));
+    drupal_add_feed('/blog/' . $user->id() . '/feed', t('RSS - !title', array('!title' => $user->getUsername() . t("'s blog"))));
 
     return $build;
   }
@@ -176,7 +176,7 @@ class BlogLister implements BlogListerInterface {
    *   Title string
    */
   public function userBlogTitle(UserInterface $user) {
-    return Xss::filter($user->getUsername()) . "'s Blog";
+    return Xss::filter($user->getUsername()) . "'s blog";
   }
 
 }

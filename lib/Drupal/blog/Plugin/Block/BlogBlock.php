@@ -6,7 +6,9 @@
  */
 
 namespace Drupal\blog\Plugin\Block;
+
 use Drupal\block\BlockBase;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Provides a latest blog posts block.
@@ -58,31 +60,41 @@ class BlogBlock extends BlockBase {
 
     $block = array();
 
-    //@todo corrently this block will dispaly to everybody, fix the access check.
-    if (True) {
     //if (\Drupal\Core\Session\AccountInterface::hasPermission('access content')) {
-      $result = db_select('node_field_data', 'n')
-        ->fields('n', array('nid', 'title', 'created'))
-        ->condition('type', 'blog')
-        ->condition('status', 1)
-        ->orderBy('created', 'DESC')
-        ->range(0, $this->configuration['blog_block_count'])
-        ->addTag('node_access')
-        ->execute();
+    $result = db_select('node_field_data', 'n')
+      ->fields('n', array('nid', 'title', 'created'))
+      ->condition('type', 'blog')
+      ->condition('status', 1)
+      ->orderBy('created', 'DESC')
+      ->range(0, $this->configuration['blog_block_count'])
+      ->addTag('node_access')
+      ->execute();
 
-      if ($node_title_list = node_title_list($result)) {
-        $block['content']['blog_list'] = $node_title_list;
-        $block['content']['blog_more'] = array(
-          '#theme' => 'more_link',
-          '#url' => 'blog',
-          '#title' => t('Read the latest blog entries.'),
-        );
-
-        return $block;
-      }
+    if ($node_title_list = node_title_list($result)) {
+      $block['content']['blog_list'] = $node_title_list;
+      $block['content']['blog_more'] = array(
+        '#theme' => 'more_link',
+        '#url' => 'blog',
+        '#title' => t('Read the latest blog entries.'),
+      );
     }
 
-    return "";
+    return $block;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access(AccountInterface $account) {
+    // By default, the block is visible unless user-configured rules indicate.
+
+    if ($account->hasPermission('access content')) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+
+  }
+
 }
 
