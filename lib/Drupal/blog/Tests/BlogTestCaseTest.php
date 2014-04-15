@@ -14,13 +14,16 @@ class BlogTestCaseTest extends WebTestBase {
   protected $own_user;
   protected $any_user;
 
+  protected $profile = 'standard';
+
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = array('node', 'block' ,'blog');
+  //public static $modules = array('node', 'block' ,'blog', 'help');
 
+  public static $modules = array('blog');
   public static function getInfo() {
     return array(
       'name' => 'Blog functionality',
@@ -30,7 +33,7 @@ class BlogTestCaseTest extends WebTestBase {
   }
 
   /**
-   * Enable modules and create users with specific permissions.
+   * Create users with specific permissions.
    */
   function setUp() {
     parent::setUp();
@@ -76,7 +79,7 @@ class BlogTestCaseTest extends WebTestBase {
     // Login the admin user.
     $this->drupalLogin($this->big_user);
     // Enable the recent blog block.
-    $this->drupalPlaceBlock('blog_block', array('region' => 'sidebar_second'));
+    $this->drupalPlaceBlock('blog_block');
 
 
     // Verify ability to change number of recent blog posts in block.

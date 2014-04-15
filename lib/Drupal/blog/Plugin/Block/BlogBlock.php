@@ -60,7 +60,6 @@ class BlogBlock extends BlockBase {
 
     $block = array();
 
-    //if (\Drupal\Core\Session\AccountInterface::hasPermission('access content')) {
     $result = db_select('node_field_data', 'n')
       ->fields('n', array('nid', 'title', 'created'))
       ->condition('type', 'blog')

@@ -1,9 +1,0 @@
-<?php
-
-/**
- * @file
- * Install, update and uninstall functions for the blog module.
- * 
- * @todo Work out whether an install file is needed at all.
- */
-
