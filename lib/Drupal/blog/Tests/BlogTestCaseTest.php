@@ -21,9 +21,8 @@ class BlogTestCaseTest extends WebTestBase {
    *
    * @var array
    */
-  //public static $modules = array('node', 'block' ,'blog', 'help');
-
   public static $modules = array('blog');
+    
   public static function getInfo() {
     return array(
       'name' => 'Blog functionality',
@@ -41,6 +40,8 @@ class BlogTestCaseTest extends WebTestBase {
     $this->big_user = $this->drupalCreateUser(array('administer blocks'));
     $this->own_user = $this->drupalCreateUser(array('create blog content', 'edit own blog content', 'delete own blog content'));
     $this->any_user = $this->drupalCreateUser(array('create blog content', 'edit any blog content', 'delete any blog content', 'access administration pages'));
+      
+    $this->drupalPlaceBlock('blog_block');
   }
 
   /**
@@ -79,8 +80,6 @@ class BlogTestCaseTest extends WebTestBase {
     // Login the admin user.
     $this->drupalLogin($this->big_user);
     // Enable the recent blog block.
-    $this->drupalPlaceBlock('blog_block');
-
 
     // Verify ability to change number of recent blog posts in block.
     $edit = array();

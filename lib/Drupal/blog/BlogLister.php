@@ -93,7 +93,7 @@ class BlogLister implements BlogListerInterface {
       ->execute()
       ->fetchCol();
 
-    $channel['title'] = t('!site_name - blogs', array('!site_name' => $this->configFactory->get('node.settings')->get('items_per_page')));
+    $channel['title'] = t('!site_name blogs', array('!site_name' => $this->configFactory->get('system.site')->get('name')));
     $channel['link'] = url('blog', array('absolute' => TRUE));
 
     return node_feed($nids, $channel);
