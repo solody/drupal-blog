@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Tests for blog.module.
+ * Contains \Drupal\blog\Tests\BlogTestCaseTest.
  */
 
 namespace Drupal\blog\Tests;
@@ -10,10 +10,11 @@ namespace Drupal\blog\Tests;
 use Drupal\simpletest\WebTestBase;
 
 class BlogTestCaseTest extends WebTestBase {
+  
   protected $big_user;
   protected $own_user;
   protected $any_user;
-
+  
   protected $profile = 'standard';
 
   /**
@@ -30,18 +31,14 @@ class BlogTestCaseTest extends WebTestBase {
       'group' => 'Blog',
     );
   }
-
-  /**
-   * Create users with specific permissions.
-   */
-  function setUp() {
+  
+  protected function setUp() {
     parent::setUp();
+
     // Create users.
     $this->big_user = $this->drupalCreateUser(array('administer blocks'));
     $this->own_user = $this->drupalCreateUser(array('create blog content', 'edit own blog content', 'delete own blog content'));
     $this->any_user = $this->drupalCreateUser(array('create blog content', 'edit any blog content', 'delete any blog content', 'access administration pages'));
-      
-    $this->drupalPlaceBlock('blog_block');
   }
 
   /**
@@ -77,13 +74,24 @@ class BlogTestCaseTest extends WebTestBase {
    * Login users, create blog nodes, and test blog functionality through the admin and user interfaces.
    */
   function testBlog() {
+      
+    // Create a node so that the block of recent posts will display.
+    $node = $this->drupalCreateNode(array('type' => 'blog', 'uid' => $this->any_user->id()));
+    
     // Login the admin user.
     $this->drupalLogin($this->big_user);
-    // Enable the recent blog block.
+      
+    // Place the recent blog posts block.
+    $blog_block = $this->drupalPlaceBlock('blog_block');
+    print_r($blog_block->label() . "XXXXXXXXXXXXXXXXX \n");
+
+    // Verify the blog block was displayed.
+    $this->drupalGet('<front>');
+    $this->assertBlockAppears($blog_block);
 
     // Verify ability to change number of recent blog posts in block.
     $edit = array();
-    $edit['blog_block_count'] = 5;
+    $edit['settings[blog_block_count]'] = 5;
     $this->drupalPostForm('admin/structure/block/manage/recentblogposts', $edit, t('Save block'));
     
     //todo fix line below variable_get is gone dood.
@@ -149,11 +157,6 @@ class BlogTestCaseTest extends WebTestBase {
       $this->assertTitle(t('Blog | Drupal'), t('Blog help node was displayed'));
       $this->assertText(t('Blog'), t('Blog help node was displayed'));
     }
-
-    // Verify the blog block was displayed.
-    $this->drupalGet('');
-    $this->assertResponse(200);
-    $this->assertText(t('Recent blog posts'), t('Blog block was displayed'));
 
     // View blog node.
     $this->drupalGet('node/' . $node->id());
