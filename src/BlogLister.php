@@ -94,7 +94,8 @@ class BlogLister implements BlogListerInterface {
       ->fetchCol();
 
     $channel['title'] = t('!site_name blogs', array('!site_name' => $this->configFactory->get('system.site')->get('name')));
-    $channel['link'] = url('blog', array('absolute' => TRUE));
+    //TODO _url is a deprecated replacement for url(), need to update with urls derived from routes.
+    $channel['link'] = _url('blog', array('absolute' => TRUE));
 
     return node_feed($nids, $channel);
   }
@@ -149,6 +150,7 @@ class BlogLister implements BlogListerInterface {
 
   /**
    * {@inheritdoc}
+   * @TODO fix this, it breaks since the removal of node_feed.
    */
   public function userBlogPostsRss(UserInterface $user) {
     $nids = db_select('node_field_data', 'n')
@@ -162,7 +164,8 @@ class BlogLister implements BlogListerInterface {
       ->execute()
       ->fetchCol();
     $channel['title'] = t("!name's blog", array('!name' => $user->getUsername()));
-    $channel['link'] = url('blog/' . $user->id(), array('absolute' => TRUE));
+    //TODO _url is a deprecated replacement for url(), need to update with urls derived from routes.
+    $channel['link'] = _url('blog/' . $user->id(), array('absolute' => TRUE));
     return node_feed($nids, $channel); 
   }
 

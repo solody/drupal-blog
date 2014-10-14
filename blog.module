@@ -6,15 +6,17 @@
  */
 
 /**
- * Implements hook_user_view().
+ * Implements hook_ENTITY_TYPE_view().
  */
-function blog_user_view($account) {
-  if (user_access('create blog content', $account)) {
-    $account->content['summary']['blog'] =  array(
+function blog_user_view(&$build, $account, $display, $view_mode) {
+  if ($account->hasPermission('create blog content')) {
+    //TODO review whether this is still an acceptable way to add to the build array.
+    $build['summary']['blog'] =  array(
       '#type' => 'user_profile_item',
       '#title' => t('Blog'),
       // l() escapes the attributes, so we should not escape !username here.
-      '#markup' => l(t('View recent blog entries'), "blog/{$account->id()}", array('attributes' => array('title' => t("Read !username's latest blog entries.", array('!username' => user_format_name($account)))))),
+      //TODO _l() is deprecated (temp replacement for l(), need to use routing based url generation.
+      '#markup' => _l(t('View recent blog entries'), "blog/{$account->id()}", array('attributes' => array('title' => t("Read !username's latest blog entries.", array('!username' => user_format_name($account)))))),
       '#attributes' => array('class' => array('blog')),
     );
   }
@@ -71,6 +73,8 @@ function blog_menu_local_tasks_alter(&$data, $route_name) {
   
   //Get the account for the current user.
   $account = \Drupal::currentUser();
+  //Get user from arg if present
+  $user = \Drupal::routeMatch()->getParameter('user');
   
   // Add action link to 'node/add/blog' on 'blog' page.
   if ($route_name == 'blog.blog') {
@@ -85,11 +89,11 @@ function blog_menu_local_tasks_alter(&$data, $route_name) {
     }
   }
   // Provide a helper action link to the author on the 'blog/%' page.
-  elseif ($route_name == 'blog.user' && $account->id() == arg(1)) {
+  elseif ($route_name == 'blog.user' && !empty($user) && $account->id() == $user->id()) {
     $data['actions']['output']['blog'] = array(
       '#theme' => 'menu_local_action',
     );
-    if (user_access('create blog content')) {
+    if ($account->hasPermission('create blog content')) {
       $data['actions']['output']['blog']['#link']['title'] = t('Post new blog entry.');
       $data['actions']['output']['blog']['#link']['href'] = 'node/add/blog';
     }
@@ -106,7 +110,7 @@ function blog_page_user_access($account) {
   // The visitor must be able to access the site's content.
   // For a blog to 'exist' the user must either be able to
   // create new blog entries, or it must have existing posts.
-  return $account->id() && user_access('access content') && (user_access('create blog content', $account) || _blog_post_exists($account));
+  return $account->id() && $account->hasPermission('access content') && ($account->hasPermission('create blog content', $account) || _blog_post_exists($account));
 }
 
 /**
