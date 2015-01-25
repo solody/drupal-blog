@@ -78,10 +78,10 @@ function blog_menu_local_tasks_alter(&$data, $route_name) {
   
   // Add action link to 'node/add/blog' on 'blog' page.
   if ($route_name == 'blog.blog') {
-    if (drupal_valid_path('node/add/blog')) {
+    if (\Drupal::service('path.validator')->isValid('node/add/blog')) {
       $data['actions']['output'][] = array(
         '#theme' => 'menu_local_action',
-        '#link' => array(                                                                                                                         
+        '#link' => array(
             'title' => t('Create new blog entry'),                                    
             'href' => 'node/add/blog',                                                                                                          
           ),           

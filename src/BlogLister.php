@@ -69,12 +69,11 @@ class BlogLister implements BlogListerInterface {
         '#theme' => 'pager',
         '#weight' => 5,
       );
+      $build['attached']['feed'][] = array('/blog/feed', t('RSS - blogs'));
     }
     else {
       drupal_set_message(t('No blog entries have been created.'));
     }
-
-    drupal_add_feed('/blog/feed', t('RSS - blogs'));
 
     return $build;
   }
@@ -134,6 +133,7 @@ class BlogLister implements BlogListerInterface {
         '#theme' => 'pager',
         '#weight' => 5,
       );
+      $build['#attached']['feed'][] = array('/blog/' . $user->id() . '/feed', t('RSS - !title', array('!title' => $user->getUsername() . t("'s blog"))));
     }
     else {
       if ($this->account->id() == $user->id()) {
@@ -143,7 +143,6 @@ class BlogLister implements BlogListerInterface {
         drupal_set_message(t('!author has not created any blog entries.', array('!author' => $user->getUsername())));
       }
     }
-    drupal_add_feed('/blog/' . $user->id() . '/feed', t('RSS - !title', array('!title' => $user->getUsername() . t("'s blog"))));
 
     return $build;
   }
@@ -151,6 +150,7 @@ class BlogLister implements BlogListerInterface {
   /**
    * {@inheritdoc}
    * @TODO fix this, it breaks since the removal of node_feed.
+   *  going to have to convert this to views with RSS it seems.
    */
   public function userBlogPostsRss(UserInterface $user) {
     $nids = db_select('node_field_data', 'n')
