@@ -4,16 +4,16 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.blog_entry.body
-    - field.field.node.blog_entry.field_blog_comments
-    - field.field.node.blog_entry.field_blog_tags
-    - node.type.blog_entry
+    - field.field.node.blog_post.body
+    - field.field.node.blog_post.field_blog_comments
+    - field.field.node.blog_post.field_blog_tags
+    - node.type.blog_post
   module:
     - text
     - user
-id: node.blog_entry.teaser
+id: node.blog_post.teaser
 targetEntityType: node
-bundle: blog_entry
+bundle: blog_post
 mode: teaser
 content:
   body:

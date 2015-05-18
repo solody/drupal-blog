@@ -4,15 +4,15 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_blog_comments
-    - node.type.blog_entry
+    - node.type.blog_post
   module:
     - comment
-id: node.blog_entry.field_blog_comments
+id: node.blog_post.field_blog_comments
 field_name: field_blog_comments
 entity_type: node
-bundle: blog_entry
+bundle: blog_post
 label: 'Blog comments'
-description: 'Comments against a blog entry.'
+description: 'Comments against a blog post.'
 required: false
 translatable: false
 default_value:

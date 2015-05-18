@@ -4,15 +4,15 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_blog_tags
-    - node.type.blog_entry
+    - node.type.blog_post
   module:
     - entity_reference
-id: node.blog_entry.field_blog_tags
+id: node.blog_post.field_blog_tags
 field_name: field_blog_tags
 entity_type: node
-bundle: blog_entry
+bundle: blog_post
 label: 'Blog tags'
-description: 'Tags to help categorize blog entry.'
+description: 'Tags to help categorize blog post.'
 required: false
 translatable: false
 default_value: {  }

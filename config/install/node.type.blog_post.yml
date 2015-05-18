@@ -8,8 +8,8 @@ third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: 'main:'
-name: 'Blog entry'
-type: blog_entry
+name: 'Blog post'
+type: blog_post
 description: 'Use for multi-user blogs. Every user gets a personal blog.'
 help: ''
 new_revision: false
