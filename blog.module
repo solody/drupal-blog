@@ -5,18 +5,22 @@
  * Enables multi-user blogs.
  */
 
+use \Drupal\Core\Url;
+
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
 function blog_user_view(&$build, $account, $display, $view_mode) {
   if ($account->hasPermission('create blog content')) {
+    // Build internal link based on router.
+    $url = Url::fromRoute('blog.user', array('user' => $account->id()));
+    $internal_link = \Drupal::l(t('View recent blog entries'), $url);
+
     //TODO review whether this is still an acceptable way to add to the build array.
     $build['summary']['blog'] =  array(
       '#type' => 'user_profile_item',
       '#title' => t('Blog'),
-      // l() escapes the attributes, so we should not escape !username here.
-      //TODO _l() is deprecated (temp replacement for l(), need to use routing based url generation.
-      '#markup' => _l(t('View recent blog entries'), "blog/{$account->id()}", array('attributes' => array('title' => t("Read !username's latest blog entries.", array('!username' => user_format_name($account)))))),
+      '#markup' => $internal_link,
       '#attributes' => array('class' => array('blog')),
     );
   }
