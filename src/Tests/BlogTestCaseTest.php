@@ -9,6 +9,11 @@ namespace Drupal\blog\Tests;
 
 use Drupal\simpletest\WebTestBase;
 
+/**
+ * Test blog functionality.
+ * 
+ * @group blog
+ */
 class BlogTestCaseTest extends WebTestBase {
   
   protected $big_user;
