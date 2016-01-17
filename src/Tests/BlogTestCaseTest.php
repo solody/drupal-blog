@@ -42,8 +42,8 @@ class BlogTestCaseTest extends WebTestBase {
 
     // Create users.
     $this->big_user = $this->drupalCreateUser(array('administer blocks'));
-    $this->own_user = $this->drupalCreateUser(array('create blog content', 'edit own blog content', 'delete own blog content'));
-    $this->any_user = $this->drupalCreateUser(array('create blog content', 'edit any blog content', 'delete any blog content', 'access administration pages'));
+    $this->own_user = $this->drupalCreateUser(array('create blog_post content', 'edit own blog_post content', 'delete own blog_post content'));
+    $this->any_user = $this->drupalCreateUser(array('create blog_post content', 'edit any blog_post content', 'delete any blog_post content', 'access administration pages'));
   }
 
   /**
@@ -53,7 +53,7 @@ class BlogTestCaseTest extends WebTestBase {
    */
   function testUnprivilegedUser() {
     // Create a blog node for a user with no blog permissions.
-    $this->drupalCreateNode(array('type' => 'blog', 'uid' => $this->big_user->id()));
+    $this->drupalCreateNode(array('type' => 'blog_post', 'uid' => $this->big_user->id()));
 
     $this->drupalLogin($this->big_user);
 
@@ -81,7 +81,7 @@ class BlogTestCaseTest extends WebTestBase {
   function testBlog() {
       
     // Create a node so that the block of recent posts will display.
-    $node = $this->drupalCreateNode(array('type' => 'blog', 'uid' => $this->any_user->id()));
+    $node = $this->drupalCreateNode(array('type' => 'blog_post', 'uid' => $this->any_user->id()));
     
     // Login the admin user.
     $this->drupalLogin($this->big_user);
@@ -107,12 +107,12 @@ class BlogTestCaseTest extends WebTestBase {
     $this->doBasicTests($this->own_user, FALSE);
 
     // Create another blog node for the any blog user.
-    $node = $this->drupalCreateNode(array('type' => 'blog', 'uid' => $this->any_user->id()));
+    $node = $this->drupalCreateNode(array('type' => 'blog_post', 'uid' => $this->any_user->id()));
     // Verify the own blog user only has access to the blog view node.
     $this->verifyBlogs($this->any_user, $node, FALSE, 403);
 
     // Create another blog node for the own blog user.
-    $node = $this->drupalCreateNode(array('type' => 'blog', 'uid' => $this->own_user->id()));
+    $node = $this->drupalCreateNode(array('type' => 'blog_post', 'uid' => $this->own_user->id()));
     // Login the any blog user.
     $this->drupalLogin($this->any_user);
     // Verify the any blog user has access to all the blog nodes.
@@ -131,11 +131,11 @@ class BlogTestCaseTest extends WebTestBase {
     // Login the user.
     $this->drupalLogin($user);
     // Create blog node.
-    $node = $this->drupalCreateNode(array('type' => 'blog'));
+    $node = $this->drupalCreateNode(array('type' => 'blog_post'));
     // Verify the user has access to all the blog nodes.
     $this->verifyBlogs($user, $node, $admin);
     // Create one more node to test the blog page with more than one node
-    $this->drupalCreateNode(array('type' => 'blog', 'uid' => $user->id()));
+    $this->drupalCreateNode(array('type' => 'blog_post', 'uid' => $user->id()));
     // Verify the blog links are displayed.
     $this->verifyBlogLinks($user);
   }
