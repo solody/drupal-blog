@@ -1,7 +1,7 @@
 blog.blog:
   path: '/blog'
   defaults:
-    _content: '\Drupal\blog\Controller\BlogController::latestBlogPosts'
+    _controller: '\Drupal\blog\Controller\BlogController::latestBlogPosts'
     _title: 'Blogs'
   requirements:
     _permission: 'access content'
@@ -16,7 +16,7 @@ blog.blog_rss:
 blog.user:
   path: '/blog/{user}'
   defaults:
-    _content: '\Drupal\blog\Controller\BlogController::userBlogPosts'
+    _controller: '\Drupal\blog\Controller\BlogController::userBlogPosts'
     _title_callback: '\Drupal\blog\Controller\BlogController::userBlogTitle'
   requirements:
     _permission: 'access content'
