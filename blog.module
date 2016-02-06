@@ -11,11 +11,11 @@ use \Drupal\Core\Url;
  * Implements hook_ENTITY_TYPE_view().
  */
 function blog_user_view(&$build, $account, $display, $view_mode) {
-  if ($account->hasPermission('create blog content')) {
+  if ($account->hasPermission('create blog_post content')) {
     // Build internal link based on router.
-    $url = Url::fromRoute('blog.user', array('user' => $account->id()));
+    $url = Url::fromRoute('view.blog.blog_user_all', array('arg_0' => $account->id()));
     $internal_link = \Drupal::l(t('View recent blog entries'), $url);
-
+    
     //TODO review whether this is still an acceptable way to add to the build array.
     $build['summary']['blog'] =  array(
       '#type' => 'user_profile_item',
@@ -80,19 +80,19 @@ function blog_menu_local_tasks_alter(&$data, $route_name) {
   $user = \Drupal::routeMatch()->getParameter('user');
   
   // Add action link to 'node/add/blog' on 'blog' page.
-  if ($route_name == 'blog.blog') {
-    if (\Drupal::service('path.validator')->isValid('node/add/blog')) {
+  if ($route_name == 'view.blog.blog_user_all') {
+    if (\Drupal::service('path.validator')->isValid('node/add/blog_post')) {
       $data['actions']['output'][] = array(
         '#theme' => 'menu_local_action',
         '#link' => array(
-            'title' => t('Create new blog entry'),                                    
-            'href' => 'node/add/blog',                                                                                                          
-          ),           
+            'title' => t('Create new blog post'),
+            'href' => 'node/add/blog',
+          ),
       );
     }
   }
   // Provide a helper action link to the author on the 'blog/%' page.
-  elseif ($route_name == 'blog.user' && !empty($user) && $account->id() == $user->id()) {
+  elseif ($route_name == 'view.blog.blog_user_all' && !empty($user) && $account->id() == $user->id()) {
     $data['actions']['output']['blog'] = array(
       '#theme' => 'menu_local_action',
     );

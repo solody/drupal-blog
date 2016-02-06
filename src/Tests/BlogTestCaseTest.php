@@ -87,20 +87,12 @@ class BlogTestCaseTest extends WebTestBase {
     $this->drupalLogin($this->big_user);
       
     // Place the recent blog posts block.
-    $blog_block = $this->drupalPlaceBlock('blog_block');
-    print_r($blog_block->label() . "XXXXXXXXXXXXXXXXX \n");
+    $blog_block = $this->drupalPlaceBlock('blog_blockblock-views-block-blog-blog-block');
+    //print_r($blog_block->label() . "XXXXXXXXXXXXXXXXX \n");
 
     // Verify the blog block was displayed.
     $this->drupalGet('<front>');
     $this->assertBlockAppears($blog_block);
-
-    // Verify ability to change number of recent blog posts in block.
-    $edit = array();
-    $edit['settings[blog_block_count]'] = 5;
-    $this->drupalPostForm('admin/structure/block/manage/recentblogposts', $edit, t('Save block'));
-    
-    //todo fix line below variable_get is gone dood.
-    //$this->assertEqual(variable_get('blog_block_count', 10), 5, t('Number of recent blog posts changed.'));
 
     // Do basic tests for each user.
     $this->doBasicTests($this->any_user, TRUE);
@@ -167,34 +159,34 @@ class BlogTestCaseTest extends WebTestBase {
     $this->drupalGet('node/' . $node->id());
     $this->assertResponse(200);
     $this->assertTitle($node->getTitle() . ' | Drupal', t('Blog node was displayed'));
-    $breadcrumb = array(
-      l(t('Home'), NULL),
-      l(t('Blogs'), 'blog'),
-      l(t("!name's blog", array('!name' => $node_user->getUsername())), 'blog/' . $node_user->id()),
-    );
+    //$breadcrumb = array(
+      //l(t('Home'), NULL),
+      //l(t('Blogs'), 'blog'),
+      //l(t("!name's blog", array('!name' => $node_user->getUsername())), 'blog/' . $node_user->id()),
+    //);
 
-    //todo sort out the breadcrumbs
+    // @todo sort out the breadcrumbs
     //$this->assertRaw(theme('breadcrumb', array('breadcrumb' => $breadcrumb)), t('Breadcrumbs were displayed'));
 
     // View blog edit node.
     $this->drupalGet('node/' . $node->id() . '/edit');
     $this->assertResponse($response);
     if ($response == 200) {
-      $this->assertTitle('Edit Blog entry ' . $node->getTitle() . ' | Drupal', t('Blog edit node was displayed'));
+      $this->assertTitle('Edit Blog post ' . $node->getTitle() . ' | Drupal', t('Blog edit node was displayed'));
     }
 
     if ($response == 200) {
       // Edit blog node.
       $edit = array();
-      $edit["title"] = 'node/' . $node->id();
-      $edit["body[0][value]"] = $this->randomName(256);
-      $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, t('Save'));
-      $this->assertRaw(t('Blog entry %title has been updated.', array('%title' => $edit["title"])), t('Blog node was edited'));
+      $edit["title[0][vslue]"] = 'node/' . $node->id();
+      $edit["body[0][value]"] = $this->randomMachineName(256);
+      $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, t('Save and keep published'));
+      $this->assertRaw(t('Blog post %title has been updated.', array('%title' => $edit["title[0][value]"])), t('Blog node was edited'));
 
       // Delete blog node.
       $this->drupalPostForm('node/' . $node->id() . '/delete', array(), t('Delete'));
       $this->assertResponse($response);
-      $this->assertRaw(t('Blog entry %title has been deleted.', array('%title' => $edit["title"])), t('Blog node was deleted'));
+      $this->assertRaw(t('Blog post %title has been deleted.', array('%title' => $edit["title"])), t('Blog node was deleted'));
     }
   }
 
@@ -217,7 +209,7 @@ class BlogTestCaseTest extends WebTestBase {
     // Confirm a blog page was displayed.
     $this->drupalGet('blog');
     $this->assertResponse(200);
-    $this->assertTitle('Blogs | Drupal', t('Blog page was displayed'));
+    $this->assertTitle('Blog posts | Drupal', t('Blog page was displayed'));
     $this->assertText(t('Home'), t('Breadcrumbs were displayed'));
     $this->assertLink(t('Create new blog entry'));
 
@@ -227,7 +219,7 @@ class BlogTestCaseTest extends WebTestBase {
 
     // Confirm a blog feed was displayed.
     $this->drupalGet('blog/feed');
-    $this->assertTitle(t('Drupal blogs'), t('Blog feed was displayed'));
+    $this->assertTitle(t('Drupal blog posts'), t('Blog feed was displayed'));
 
     // Confirm a blog feed was displayed per user.
     $this->drupalGet('blog/' . $user->id() . '/feed');

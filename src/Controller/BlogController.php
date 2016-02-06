@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
  /**
  *
- * Controller routines for blog routes.
+ * Controller routines for blog.
  */
 class BlogController implements ContainerInjectionInterface {
 
@@ -44,50 +44,6 @@ class BlogController implements ContainerInjectionInterface {
     return new static(
       $container->get('blog.lister')
     );
-  }
-
-  /**
-   * Prints a listing of all blog posts.
-   *
-   * @return array
-   *   A render array representing the listing of all blog content.
-   */
-  public function latestBlogPosts() {
-    return $this->blogLister->allBlogPosts();
-  }
-
-  /**
-   * Outputs a blog RSS feed.
-   *
-   * @return array
-   *   A render array representing the listing of all blog content.
-   */
-  public function latestBlogPostsRss() {
-    return $this->blogLister->allBlogPostsRss();
-  }
-
-  /**
-   * Prints a listing of user blog posts.
-   *
-   * @param UserInterface $user
-   *
-   * @return array
-   *   A render array representing the listing of all user blog posts.
-   */
-  public function userBlogPosts(UserInterface $user) {
-    return $this->blogLister->userBlogPosts($user);
-  }
-
-  /**
-   * Outputs a user blog RSS feed.
-   *
-   * @param UserInterface $user
-   *
-   * @return array
-   *   A render array representing the listing of all user blog postsi.
-   */
-  public function userBlogPostsRss(UserInterface $user) {
-    return $this->blogLister->userBlogPostsRss($user);
   }
 
   /**
