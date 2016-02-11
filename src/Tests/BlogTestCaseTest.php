@@ -178,15 +178,15 @@ class BlogTestCaseTest extends WebTestBase {
     if ($response == 200) {
       // Edit blog node.
       $edit = array();
-      $edit["title[0][vslue]"] = 'node/' . $node->id();
+      $edit["title[0][value]"] = 'node/' . $node->id();
       $edit["body[0][value]"] = $this->randomMachineName(256);
-      $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, t('Save and keep published'));
+      $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, t('Save'));
       $this->assertRaw(t('Blog post %title has been updated.', array('%title' => $edit["title[0][value]"])), t('Blog node was edited'));
 
       // Delete blog node.
       $this->drupalPostForm('node/' . $node->id() . '/delete', array(), t('Delete'));
       $this->assertResponse($response);
-      $this->assertRaw(t('Blog post %title has been deleted.', array('%title' => $edit["title"])), t('Blog node was deleted'));
+      $this->assertRaw(t('The Blog post %title has been deleted.', array('%title' => $edit["title"])), t('Blog node was deleted'));
     }
   }
 
