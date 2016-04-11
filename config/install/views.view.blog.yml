@@ -249,7 +249,7 @@ display:
             title_enable: false
             title: All
           title_enable: true
-          title: '{{ arguments.uid }}''s Blog'
+          title: '{{ arguments.uid }}''s blog'
           default_argument_type: fixed
           default_argument_options:
             argument: ''
@@ -313,8 +313,10 @@ display:
         type: rss
       path: blog/feed
       displays:
-        default: default
-        page_1: page_1
+        blog_all: blog_all
+        default: '0'
+        blog_block: '0'
+        blog_user_all: '0'
       display_description: ''
     cache_metadata:
       max-age: -1
@@ -337,10 +339,12 @@ display:
         type: some
       style:
         type: rss
-      path: blog/feed
+      path: blog/%/feed
       displays:
-        default: default
-        page_1: page_1
+        blog_user_all: blog_user_all
+        default: '0'
+        blog_all: '0'
+        blog_block: '0'
       display_description: ''
       arguments:
         uid:

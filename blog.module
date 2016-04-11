@@ -6,6 +6,8 @@
  */
 
 use \Drupal\Core\Url;
+use \Drupal\Core\Session;
+use \Drupal\node\NodeInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_view().
@@ -50,59 +52,23 @@ function blog_help($path, $arg) {
 }
 
 /**
- * Implements hook_node_view().
+ * Implements hook_node_links_alter().
  */
-function blog_node_view(&$build, $node, $display, $view_mode) {
-  if ($view_mode != 'rss') {
-    if ($node->type == 'blog' && (arg(0) != 'blog' || arg(1) != $node->uid)) {
-      $links['blog_usernames_blog'] = array(
-        'title' => t("!username's blog", array('!username' => user_format_name($node))),
-        'href' => "blog/$node->uid",
-        'attributes' => array('title' => t("Read !username's latest blog entries.", array('!username' => user_format_name($node)))),
-      );
-      $node->content['links']['blog'] = array(
-        '#theme' => 'links__node__blog',
-        '#links' => $links,
-        '#attributes' => array('class' => array('links', 'inline')),
-      );
-    }
-  }
-}
+function blog_node_links_alter(array &$node_links, NodeInterface $entity, array &$context) {
+  if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'blog_post' && $context['view_mode'] != 'rss') {
 
-/**
- * Implements hook_menu_local_tasks_alter().
- */
-function blog_menu_local_tasks_alter(&$data, $route_name) {
-  
-  //Get the account for the current user.
-  $account = \Drupal::currentUser();
-  //Get user from arg if present
-  $user = \Drupal::routeMatch()->getParameter('user');
-  
-  // Add action link to 'node/add/blog' on 'blog' page.
-  if ($route_name == 'view.blog.blog_user_all') {
-    if (\Drupal::service('path.validator')->isValid('node/add/blog_post')) {
-      $data['actions']['output'][] = array(
-        '#theme' => 'menu_local_action',
-        '#link' => array(
-            'title' => t('Create new blog post'),
-            'href' => 'node/add/blog',
-          ),
-      );
-    }
-  }
-  // Provide a helper action link to the author on the 'blog/%' page.
-  elseif ($route_name == 'view.blog.blog_user_all' && !empty($user) && $account->id() == $user->id()) {
-    $data['actions']['output']['blog'] = array(
-      '#theme' => 'menu_local_action',
+    $links['blog_usernames_blog'] = array(
+      'title' => t("username's Blog", array('username' => $entity->getOwner()->getDisplayName())),
+      'url' => Url::fromRoute('view.blog.blog_user_all', [
+        'arg_0' => $entity->getOwnerId(),
+      ]),
+      'attributes' => array('title' => t("Read username's latest blog entries.", array('username' => $entity->getOwner()->getDisplayName()))),
     );
-    if ($account->hasPermission('create blog content')) {
-      $data['actions']['output']['blog']['#link']['title'] = t('Post new blog entry.');
-      $data['actions']['output']['blog']['#link']['href'] = 'node/add/blog';
-    }
-    else {
-      $data['actions']['output']['blog']['#link']['title'] = t('You are not allowed to post a new blog entry.');
-    }
+    $node_links['usernames_blog'] = array(
+      '#theme' => 'links__node__blog',
+      '#links' => $links,
+      '#attributes' => array('class' => array('links', 'inline')),
+    );
   }
 }
 
