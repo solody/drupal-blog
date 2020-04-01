@@ -3,6 +3,5 @@ description: "Enables multi-user blogs."
 core: 8.x
 type: module
 dependencies:
-  - node
-  - views
-
+  - drupal:node
+  - drupal:views
