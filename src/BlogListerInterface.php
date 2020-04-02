@@ -19,5 +19,4 @@ interface BlogListerInterface {
    *
    */
   public function userBlogTitle(UserInterface $user);
-
 }

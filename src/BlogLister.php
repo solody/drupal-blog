@@ -9,6 +9,7 @@ namespace Drupal\blog;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\UserInterface;
 use Drupal\Component\Utility\Xss;
 
@@ -49,7 +50,6 @@ class BlogLister implements BlogListerInterface {
    *   Title string
    */
   public function userBlogTitle(UserInterface $user) {
-    return Xss::filter($user->getUsername()) . "'s blog";
+    return new TranslatableMarkup("@username's blog", ['@username' => $user->getDisplayName()]);
   }
-
 }
