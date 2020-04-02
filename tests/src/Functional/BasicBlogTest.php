@@ -25,7 +25,7 @@ class BasicBlogTest extends BlogTestBase {
   /**
    * @var \Drupal\user\UserInterface
    */
-  protected $regular_user, $block_admin_user;
+  protected $regular_user;
 
   protected function setUp() {
     parent::setUp();
