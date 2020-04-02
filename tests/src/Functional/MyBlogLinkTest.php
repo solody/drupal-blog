@@ -52,4 +52,5 @@ class MyBlogLinkTest extends BlogTestBase {
   public function testMyBlogLinkWithAnonUser() {
     $this->assertNoLink('My blog');
   }
+
 }

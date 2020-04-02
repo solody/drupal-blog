@@ -10,11 +10,9 @@ namespace Drupal\blog\Controller;
 use Drupal\blog\BlogListerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\user\UserInterface;
-
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
- /**
+/**
  *
  * Controller routines for blog.
  */
@@ -54,7 +52,8 @@ class BlogController implements ContainerInjectionInterface {
    * @return string
    *   A title string for a user blog page.
    */
-   public function userBlogTitle(UserInterface $user) {
-     return $this->blogLister->userBlogTitle($user); 
-   }
+  public function userBlogTitle(UserInterface $user) {
+    return $this->blogLister->userBlogTitle($user);
+  }
+
 }

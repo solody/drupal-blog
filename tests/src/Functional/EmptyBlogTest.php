@@ -25,6 +25,9 @@ class EmptyBlogTest extends BrowserTestBase {
    */
   protected $blogger_no_entries;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
     // create blogger user with no blog posts
@@ -41,4 +44,5 @@ class EmptyBlogTest extends BrowserTestBase {
     $this->drupalGet('blog');
     $this->assertText('No blog entries have been created.');
   }
+
 }

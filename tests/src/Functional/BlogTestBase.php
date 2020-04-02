@@ -30,6 +30,9 @@ abstract class BlogTestBase extends BrowserTestBase {
    */
   protected $blogger1, $blogger2, $blogger_no_entries;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
     // add article node type
@@ -82,4 +85,5 @@ abstract class BlogTestBase extends BrowserTestBase {
       }
     }
   }
+
 }

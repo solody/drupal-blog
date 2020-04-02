@@ -70,4 +70,5 @@ class MyBlogLink extends MenuLinkDefault {
     }
     return ['arg_0' => 0];
   }
+
 }

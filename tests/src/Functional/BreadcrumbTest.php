@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\blog\Functional;
 
+use Drupal;
 use Drupal\Tests\block\Traits\BlockCreationTrait;
 
 /**
@@ -10,6 +11,7 @@ use Drupal\Tests\block\Traits\BlockCreationTrait;
  * @group blog
  */
 class BreadcrumbTest extends BlogTestBase {
+
   use BlockCreationTrait;
 
   /**
@@ -22,6 +24,9 @@ class BreadcrumbTest extends BlogTestBase {
     'blog',
   ];
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
     // add breadcrumb block
@@ -35,12 +40,14 @@ class BreadcrumbTest extends BlogTestBase {
     $blog_nid = array_rand($this->blog_nodes1);
     $blog_owner = $this->blog_nodes1[$blog_nid]->getOwner();
     $this->drupalGet('node/' . $blog_nid);
-    $links = $this->getSession()->getPage()->findAll('css', '.block-system-breadcrumb-block li a');
+    $links = $this->getSession()
+      ->getPage()
+      ->findAll('css', '.block-system-breadcrumb-block li a');
     $this->assertEquals(count($links), 3, 'Breadcrumb element number is correctly.');
-    list($home, $blogs, $personal_blog) = $links;
+    [$home, $blogs, $personal_blog] = $links;
     $this->assertTrue(($home->getAttribute('href') == '/' && $home->getHtml() == 'Home'), 'Home link correctly.');
     $this->assertTrue(($blogs->getAttribute('href') == '/blog' && $blogs->getHtml() == 'Blogs'), 'Blogs link correctly.');
-    $blog_name = \Drupal::service('blog.lister')->userBlogTitle($blog_owner);
+    $blog_name = Drupal::service('blog.lister')->userBlogTitle($blog_owner);
     $blog_url = '/blog/' . $blog_owner->id();
     $this->assertTrue(($personal_blog->getAttribute('href') == $blog_url && $personal_blog->getHtml() == $blog_name), 'Personal blog link correctly.');
   }
@@ -51,10 +58,13 @@ class BreadcrumbTest extends BlogTestBase {
   public function testOtherNodeBreadcrumb() {
     $article_nid = array_rand($this->article_nodes1);
     $article_owner = $this->article_nodes1[$article_nid]->getOwner();
-    $blog_name = \Drupal::service('blog.lister')->userBlogTitle($article_owner);
+    $blog_name = Drupal::service('blog.lister')->userBlogTitle($article_owner);
     $this->drupalGet('node/' . $article_nid);
-    $links = $this->getSession()->getPage()->findAll('css', '.block-system-breadcrumb-block li a');
+    $links = $this->getSession()
+      ->getPage()
+      ->findAll('css', '.block-system-breadcrumb-block li a');
     $link = array_pop($links);
     $this->assertFalse($link->getHtml() == $blog_name, 'Other node type breadcrumb is correct.');
   }
+
 }

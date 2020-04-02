@@ -18,6 +18,7 @@ use Drupal\Core\Url;
  * Build blog-specific breadcrumb.
  */
 class BlogBreadcrumbBuilder implements BreadcrumbBuilderInterface {
+
   use StringTranslationTrait;
 
   /**
@@ -58,4 +59,5 @@ class BlogBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $links[] = Link::fromTextAndUrl($title_text, $blog_url);
     return $breadcrumb->setLinks($links);
   }
+
 }
