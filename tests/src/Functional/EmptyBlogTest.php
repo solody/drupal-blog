@@ -37,12 +37,20 @@ class EmptyBlogTest extends BrowserTestBase {
   }
 
   /**
-   * Test empty blog lists.
+   * Test empty blog lists (all blog).
    */
-  public function testEmptyLists() {
+  public function testAllBlogEmptyLists() {
     $this->drupalLogin($this->bloggerNoEntries);
     $this->drupalGet('blog');
     $this->assertText('No blog entries have been created.');
   }
 
+  /**
+   * Test empty personal blog.
+   */
+  public function testEmptyPersonalBlog() {
+    $this->drupalLogin($this->bloggerNoEntries);
+    $this->drupalGet('blog/' . $this->bloggerNoEntries->id());
+    $this->assertText($this->bloggerNoEntries->getDisplayName() . ' has not created any blog entries.');
+  }
 }
