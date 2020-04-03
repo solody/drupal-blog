@@ -53,4 +53,5 @@ class EmptyBlogTest extends BrowserTestBase {
     $this->drupalGet('blog/' . $this->bloggerNoEntries->id());
     $this->assertText($this->bloggerNoEntries->getDisplayName() . ' has not created any blog entries.');
   }
+
 }
