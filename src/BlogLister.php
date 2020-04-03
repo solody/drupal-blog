@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\book\BlogLister.
- */
-
 namespace Drupal\blog;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -42,10 +37,10 @@ class BlogLister implements BlogListerInterface {
   /**
    * {@inheritdoc}
    *
-   * @param UserInterface $user
-   *   User object
+   * @param \Drupal\user\UserInterface $user
+   *   User object.
    *
-   * @return String
+   * @return string
    *   Title string
    */
   public function userBlogTitle(UserInterface $user) {

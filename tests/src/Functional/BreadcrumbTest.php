@@ -29,7 +29,7 @@ class BreadcrumbTest extends BlogTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    // add breadcrumb block
+    // Add breadcrumb block.
     $this->placeBlock('system_breadcrumb_block', ['region' => 'content']);
   }
 
@@ -37,8 +37,8 @@ class BreadcrumbTest extends BlogTestBase {
    * Blog node type breadcrumb test.
    */
   public function testBlogNodeBreadcrumb() {
-    $blog_nid = array_rand($this->blog_nodes1);
-    $blog_owner = $this->blog_nodes1[$blog_nid]->getOwner();
+    $blog_nid = array_rand($this->blogNodes1);
+    $blog_owner = $this->blogNodes1[$blog_nid]->getOwner();
     $this->drupalGet('node/' . $blog_nid);
     $links = $this->getSession()
       ->getPage()
@@ -56,8 +56,8 @@ class BreadcrumbTest extends BlogTestBase {
    * Other node type breadcrumb test.
    */
   public function testOtherNodeBreadcrumb() {
-    $article_nid = array_rand($this->article_nodes1);
-    $article_owner = $this->article_nodes1[$article_nid]->getOwner();
+    $article_nid = array_rand($this->articleNodes1);
+    $article_owner = $this->articleNodes1[$article_nid]->getOwner();
     $blog_name = Drupal::service('blog.lister')->userBlogTitle($article_owner);
     $this->drupalGet('node/' . $article_nid);
     $links = $this->getSession()

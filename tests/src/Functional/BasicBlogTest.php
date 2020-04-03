@@ -26,7 +26,7 @@ class BasicBlogTest extends BlogTestBase {
   /**
    * @var \Drupal\user\UserInterface
    */
-  protected $regular_user;
+  protected $regularUser;
 
   /**
    * {@inheritdoc}
@@ -34,14 +34,14 @@ class BasicBlogTest extends BlogTestBase {
   protected function setUp() {
     parent::setUp();
     // Create regular user.
-    $this->regular_user = $this->drupalCreateUser(['create article content']);
+    $this->regularUser = $this->drupalCreateUser(['create article content']);
   }
 
   /**
    * Test personal blog title.
    */
   public function testPersonalBlogTitle() {
-    $this->drupalLogin($this->regular_user);
+    $this->drupalLogin($this->regularUser);
     $this->drupalGet('blog/' . $this->blogger1->id());
     $this->assertResponse(200);
     $this->assertTitle($this->blogger1->getDisplayName() . "'s blog | Drupal");
@@ -51,11 +51,11 @@ class BasicBlogTest extends BlogTestBase {
    * View the blog of a user with no blog entries as another user.
    */
   public function testBlogPageNoEntries() {
-    $this->drupalLogin($this->regular_user);
-    $this->drupalGet('blog/' . $this->blogger_no_entries->id());
+    $this->drupalLogin($this->regularUser);
+    $this->drupalGet('blog/' . $this->bloggerNoEntries->id());
     $this->assertResponse(200);
-    $this->assertTitle($this->blogger_no_entries->getDisplayName() . "'s blog | Drupal");
-    $this->assertText($this->blogger_no_entries->getDisplayName() . ' has not created any blog entries.');
+    $this->assertTitle($this->bloggerNoEntries->getDisplayName() . "'s blog | Drupal");
+    $this->assertText($this->bloggerNoEntries->getDisplayName() . ' has not created any blog entries.');
   }
 
   /**

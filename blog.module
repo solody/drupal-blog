@@ -17,7 +17,7 @@ function blog_user_view(&$build, $account, $display, $view_mode) {
     $url = Url::fromRoute('view.blog.blog_user_all', ['arg_0' => $account->id()]);
     $internal_link = Drupal::l(t('View recent blog entries'), $url);
 
-    //TODO review whether this is still an acceptable way to add to the build array.
+    // TODO review whether this is still an acceptable way to add to the build array.
     $build['summary']['blog'] = [
       '#type' => 'user_profile_item',
       '#title' => t('Blog'),
@@ -103,5 +103,3 @@ function _blog_post_exists($account) {
     ->execute()
     ->fetchField();
 }
-
-

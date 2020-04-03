@@ -3,7 +3,7 @@
 namespace Drupal\Tests\blog\Functional;
 
 /**
- * "My blog" link test for blog module.
+ * Link "My blog" test for blog module.
  *
  * @group blog
  */
@@ -17,7 +17,7 @@ class MyBlogLinkTest extends BlogTestBase {
   /**
    * @var \Drupal\user\UserInterface
    */
-  protected $regular_user;
+  protected $regularUser;
 
   /**
    * {@inheritdoc}
@@ -25,8 +25,8 @@ class MyBlogLinkTest extends BlogTestBase {
   protected function setUp() {
     parent::setUp();
     // Create regular user.
-    $this->regular_user = $this->drupalCreateUser(['create article content']);
-    // add account_menu block
+    $this->regularUser = $this->drupalCreateUser(['create article content']);
+    // Add account_menu block.
     $this->placeBlock('system_menu_block:account', ['region' => 'content']);
   }
 

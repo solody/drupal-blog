@@ -19,7 +19,6 @@ class MyBlogLink extends MenuLinkDefault {
    */
   protected $currentUser;
 
-
   /**
    * {@inheritdoc}
    */

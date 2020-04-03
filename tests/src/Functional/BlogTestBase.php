@@ -23,41 +23,41 @@ abstract class BlogTestBase extends BrowserTestBase {
   /**
    * @var \Drupal\node\NodeInterface[]
    */
-  protected $blog_nodes1, $blog_nodes2, $article_nodes1, $article_nodes2;
+  protected $blogNodes1, $blogNodes2, $articleNodes1, $articleNodes2;
 
   /**
    * @var \Drupal\user\UserInterface
    */
-  protected $blogger1, $blogger2, $blogger_no_entries;
+  protected $blogger1, $blogger2, $bloggerNoEntries;
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    // add article node type
+    // Add article node type.
     $this->createContentType([
       'type' => 'article',
     ]);
-    // create blogger1 user
+    // Create blogger1 user.
     $this->blogger1 = $this->drupalCreateUser([
       'create article content',
       'create blog_post content',
     ]);
-    // create blogger2 user
+    // Create blogger2 user.
     $this->blogger2 = $this->drupalCreateUser([
       'create article content',
       'create blog_post content',
     ]);
-    // create blogger user with no blog posts
-    $this->blogger_no_entries = $this->drupalCreateUser([
+    // Create blogger user with no blog posts.
+    $this->bloggerNoEntries = $this->drupalCreateUser([
       'create blog_post content',
     ]);
-    // generate blog posts and articles
-    $this->blog_nodes1 = [];
-    $this->blog_nodes2 = [];
-    $this->article_nodes1 = [];
-    $this->article_nodes2 = [];
+    // Generate blog posts and articles.
+    $this->blogNodes1 = [];
+    $this->blogNodes2 = [];
+    $this->articleNodes1 = [];
+    $this->articleNodes2 = [];
     for ($i = 0; $i < 10; $i++) {
       $node = $this->createNode([
         'type' => 'blog_post',
@@ -65,10 +65,10 @@ abstract class BlogTestBase extends BrowserTestBase {
         'uid' => ($i % 2) ? $this->blogger1->id() : $this->blogger2->id(),
       ]);
       if ($i % 2) {
-        $this->blog_nodes1[$node->id()] = $node;
+        $this->blogNodes1[$node->id()] = $node;
       }
       else {
-        $this->blog_nodes2[$node->id()] = $node;
+        $this->blogNodes2[$node->id()] = $node;
       }
     }
     for ($i = 0; $i < 10; $i++) {
@@ -78,10 +78,10 @@ abstract class BlogTestBase extends BrowserTestBase {
         'uid' => ($i % 2) ? $this->blogger1->id() : $this->blogger2->id(),
       ]);
       if ($i % 2) {
-        $this->article_nodes1[$node->id()] = $node;
+        $this->articleNodes1[$node->id()] = $node;
       }
       else {
-        $this->article_nodes2[$node->id()] = $node;
+        $this->articleNodes2[$node->id()] = $node;
       }
     }
   }
