@@ -11,13 +11,15 @@ use Drupal\Tests\block\Traits\BlockCreationTrait;
  * @group blog
  */
 class BreadcrumbTest extends BlogTestBase {
-
   use BlockCreationTrait;
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
    */
   protected static $modules = [
     'block',

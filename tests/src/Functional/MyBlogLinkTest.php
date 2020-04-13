@@ -9,6 +9,14 @@ namespace Drupal\Tests\blog\Functional;
  */
 class MyBlogLinkTest extends BlogTestBase {
 
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'block',
     'blog',

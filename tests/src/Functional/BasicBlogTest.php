@@ -10,13 +10,15 @@ use Drupal\Tests\block\Functional\AssertBlockAppearsTrait;
  * @group blog
  */
 class BasicBlogTest extends BlogTestBase {
-
   use AssertBlockAppearsTrait;
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
    */
   protected static $modules = [
     'block',

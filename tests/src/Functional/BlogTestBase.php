@@ -11,10 +11,13 @@ use Drupal\Tests\BrowserTestBase;
  */
 abstract class BlogTestBase extends BrowserTestBase {
 
+ /**
+  * {@inheritdoc}
+  */
+  protected $defaultTheme = 'stark';
+
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = [
     'blog',

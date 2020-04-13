@@ -12,9 +12,12 @@ use Drupal\Tests\BrowserTestBase;
 class EmptyBlogTest extends BrowserTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
    */
   protected static $modules = [
     'blog',
