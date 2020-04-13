@@ -33,7 +33,7 @@ abstract class BlogTestBase extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     // Add article node type.
     $this->createContentType([

@@ -22,7 +22,7 @@ class MyBlogLinkTest extends BlogTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     // Create regular user.
     $this->regularUser = $this->drupalCreateUser(['create article content']);
