@@ -37,6 +37,7 @@ class BlogBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $node = $route_match->getParameter('node');
       return ($node->bundle() == 'blog_post');
     }
+    return FALSE;
   }
 
   /**

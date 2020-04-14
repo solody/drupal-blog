@@ -22,7 +22,7 @@ class MyBlogLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, StaticMenuLinkOverridesInterface $static_override, AccountInterface $current_user) {
+  final public function __construct(array $configuration, $plugin_id, $plugin_definition, StaticMenuLinkOverridesInterface $static_override, AccountInterface $current_user) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $static_override);
     $this->currentUser = $current_user;
   }

@@ -48,7 +48,7 @@ class BreadcrumbTest extends BlogTestBase {
     [$home, $blogs, $personal_blog] = $links;
     $this->assertTrue(($home->getAttribute('href') == '/' && $home->getHtml() == 'Home'), 'Home link correctly.');
     $this->assertTrue(($blogs->getAttribute('href') == '/blog' && $blogs->getHtml() == 'Blogs'), 'Blogs link correctly.');
-    $blog_name = \Drupal::service('blog.lister')->userBlogTitle($blog_owner);
+    $blog_name = $this->container->get('blog.lister')->userBlogTitle($blog_owner);
     $blog_url = '/blog/' . $blog_owner->id();
     $this->assertTrue(($personal_blog->getAttribute('href') == $blog_url && $personal_blog->getHtml() == $blog_name), 'Personal blog link correctly.');
   }
@@ -59,7 +59,7 @@ class BreadcrumbTest extends BlogTestBase {
   public function testOtherNodeBreadcrumb() {
     $article_nid = array_rand($this->articleNodes1);
     $article_owner = $this->articleNodes1[$article_nid]->getOwner();
-    $blog_name = \Drupal::service('blog.lister')->userBlogTitle($article_owner);
+    $blog_name = $this->container->get('blog.lister')->userBlogTitle($article_owner);
     $this->drupalGet('node/' . $article_nid);
     $links = $this->getSession()
       ->getPage()

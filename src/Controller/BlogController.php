@@ -25,7 +25,7 @@ class BlogController implements ContainerInjectionInterface {
    * @param \Drupal\blog\BlogListerInterface $blogLister
    *   The blog lister.
    */
-  public function __construct(BlogListerInterface $blogLister) {
+  final public function __construct(BlogListerInterface $blogLister) {
     $this->blogLister = $blogLister;
   }
 
