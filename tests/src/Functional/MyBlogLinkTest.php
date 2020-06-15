@@ -39,19 +39,12 @@ class MyBlogLinkTest extends BlogTestBase {
   }
 
   /**
-   * Test "My blog" link with blogger user.
-   */
-  public function testMyBlogLinkWithBloggerUser() {
-    $this->drupalLogin($this->blogger1);
-    $this->assertLink('My blog');
-    $this->assertLinkByHref('/blog/' . $this->blogger1->id());
-  }
-
-  /**
    * Test "My blog" link with regular user.
    */
   public function testMyBlogLinkWithRegularUser() {
-    $this->assertNoLink('My blog');
+    $this->drupalLogin($this->regularUser);
+    $this->assertLink('My blog');
+    $this->assertLinkByHref('/blog/' . $this->regularUser->id());
   }
 
   /**
