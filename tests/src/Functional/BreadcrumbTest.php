@@ -46,11 +46,11 @@ class BreadcrumbTest extends BlogTestBase {
       ->findAll('css', '#block-breadcrumb li a');
     $this->assertEquals(count($links), 3, 'Breadcrumb element number is correctly.');
     [$home, $blogs, $personal_blog] = $links;
-    $this->assertTrue(($home->getAttribute('href') == '/' && $home->getHtml() == 'Home'), 'Home link correctly.');
-    $this->assertTrue(($blogs->getAttribute('href') == '/blog' && $blogs->getHtml() == 'Blogs'), 'Blogs link correctly.');
+    $this->assertTrue(($home->getAttribute('href') === '/' && $home->getHtml() === 'Home'), 'Home link correctly.');
+    $this->assertTrue(($blogs->getAttribute('href') === '/blog' && $blogs->getHtml() === 'Blogs'), 'Blogs link correctly.');
     $blog_name = $this->container->get('blog.lister')->userBlogTitle($blog_owner);
     $blog_url = '/blog/' . $blog_owner->id();
-    $this->assertTrue(($personal_blog->getAttribute('href') == $blog_url && $personal_blog->getHtml() == $blog_name), 'Personal blog link correctly.');
+    $this->assertTrue(($personal_blog->getAttribute('href') === $blog_url && $personal_blog->getHtml() === $blog_name), 'Personal blog link correctly.');
   }
 
   /**
@@ -65,7 +65,7 @@ class BreadcrumbTest extends BlogTestBase {
       ->getPage()
       ->findAll('css', '#block-breadcrumb li a');
     $link = array_pop($links);
-    $this->assertFalse($link->getHtml() == $blog_name, 'Other node type breadcrumb is correct.');
+    $this->assertFalse($link->getHtml() === $blog_name, 'Other node type breadcrumb is correct.');
   }
 
 }
