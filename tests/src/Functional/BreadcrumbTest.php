@@ -50,7 +50,7 @@ class BreadcrumbTest extends BlogTestBase {
     $this->assertTrue(($blogs->getAttribute('href') === '/blog' && $blogs->getHtml() === 'Blogs'), 'Blogs link correctly.');
     $blog_name = $this->container->get('blog.lister')->userBlogTitle($blog_owner);
     $blog_url = '/blog/' . $blog_owner->id();
-    $this->assertTrue(($personal_blog->getAttribute('href') === $blog_url && $personal_blog->getHtml() === $blog_name), 'Personal blog link correctly.');
+    $this->assertTrue(($personal_blog->getAttribute('href') === $blog_url && $personal_blog->getHtml() === (string) $blog_name), 'Personal blog link correctly.');
   }
 
   /**
