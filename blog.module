@@ -11,6 +11,18 @@ use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_entity_extra_field_info().
+ */
+function blog_entity_extra_field_info() {
+  $extra = [];
+  $extra['user']['user']['display']['blog__personal_blog_link'] = [
+    'label' => t('Personal blog link'),
+    'weight' => 0,
+  ];
+  return $extra;
+}
+
+/**
  * Implements hook_ENTITY_TYPE_view().
  */
 function blog_user_view(&$build, $account, $display, $view_mode) {
@@ -18,11 +30,10 @@ function blog_user_view(&$build, $account, $display, $view_mode) {
     // Build internal link based on router.
     $url = Url::fromRoute('view.blog.blog_user_all', ['arg_0' => $account->id()]);
     $internal_link = Link::fromTextAndUrl(t('View recent blog entries'), $url)->toString();
-
-    // TODO review whether this is still an acceptable way to add to the build array.
-    $build['summary']['blog'] = [
-      '#type' => 'user_profile_item',
+    $build['blog__personal_blog_link'] = [
+      '#type' => 'item',
       '#title' => t('Blog'),
+      '#title_display' => 'invisible',
       '#markup' => $internal_link,
       '#attributes' => ['class' => ['blog']],
     ];

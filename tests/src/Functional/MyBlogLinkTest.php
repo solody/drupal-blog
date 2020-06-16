@@ -3,7 +3,7 @@
 namespace Drupal\Tests\blog\Functional;
 
 /**
- * Link "My blog" test for blog module.
+ * Link "My blog" and "View recent blog entries" test for blog module.
  *
  * @group blog
  */
@@ -20,6 +20,7 @@ class MyBlogLinkTest extends BlogTestBase {
   protected static $modules = [
     'block',
     'blog',
+    'field_ui',
   ];
 
   /**
@@ -33,7 +34,7 @@ class MyBlogLinkTest extends BlogTestBase {
   protected function setUp(): void {
     parent::setUp();
     // Create regular user.
-    $this->regularUser = $this->drupalCreateUser(['create article content']);
+    $this->regularUser = $this->drupalCreateUser(['create article content', 'administer user display']);
     // Add account_menu block.
     $this->placeBlock('system_menu_block:account', ['region' => 'content']);
   }
@@ -54,4 +55,19 @@ class MyBlogLinkTest extends BlogTestBase {
     $this->assertNoLink('My blog');
   }
 
+  /**
+   * Test "Personal blog link" entry on user "Manage display" page.
+   */
+  public function testPersonalBlogLinkWithManageDisplayPage() {
+    $this->drupalLogin($this->regularUser);
+    $this->drupalGet('admin/config/people/accounts/display');
+    $this->assertText('Personal blog link');
+  }
+
+  public function testPersonalBlogLink() {
+    $this->drupalLogin($this->blogger1);
+    $this->drupalGet('user/' . $this->blogger1->id());
+    $this->assertLink('View recent blog entries');
+    $this->assertLinkByHref('/blog/' . $this->blogger1->id());
+  }
 }
