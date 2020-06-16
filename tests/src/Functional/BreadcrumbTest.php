@@ -46,7 +46,7 @@ class BreadcrumbTest extends BlogTestBase {
       ->findAll('css', '#block-breadcrumb li a');
     $this->assertEquals(count($links), 3, 'Breadcrumb element number is correctly.');
     [$home, $blogs, $personal_blog] = $links;
-    $this->assertTrue(($home->getAttribute('href') === '/' && $home->getHtml() === 'Home'), 'Home link correctly.');
+    $this->assertTrue(($home->getAttribute('href') === base_path() && $home->getHtml() === 'Home'), 'Home link correctly.');
     $this->assertTrue(($blogs->getAttribute('href') === '/blog' && $blogs->getHtml() === 'Blogs'), 'Blogs link correctly.');
     $blog_name = $this->container->get('blog.lister')->userBlogTitle($blog_owner);
     $blog_url = '/blog/' . $blog_owner->id();
