@@ -64,10 +64,14 @@ class MyBlogLinkTest extends BlogTestBase {
     $this->assertText('Personal blog link');
   }
 
+  /**
+   * Test "Personal blog link" on user profile page.
+   */
   public function testPersonalBlogLink() {
     $this->drupalLogin($this->blogger1);
     $this->drupalGet('user/' . $this->blogger1->id());
     $this->assertLink('View recent blog entries');
     $this->assertLinkByHref('/blog/' . $this->blogger1->id());
   }
+
 }

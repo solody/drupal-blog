@@ -34,8 +34,8 @@ class BlogController implements ContainerInjectionInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('blog.lister')
-    );
+          $container->get('blog.lister')
+      );
   }
 
   /**

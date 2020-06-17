@@ -33,7 +33,9 @@ class BlogBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    */
   public function applies(RouteMatchInterface $route_match) {
     if ($route_match->getRouteName() == 'entity.node.canonical') {
-      /** @var \Drupal\node\NodeInterface $node */
+      /**
+* @var \Drupal\node\NodeInterface $node
+*/
       $node = $route_match->getParameter('node');
       return ($node->bundle() == 'blog_post');
     }
@@ -44,7 +46,9 @@ class BlogBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * {@inheritdoc}
    */
   public function build(RouteMatchInterface $route_match) {
-    /** @var \Drupal\node\NodeInterface $node */
+    /**
+* @var \Drupal\node\NodeInterface $node
+*/
     $node = $route_match->getParameter('node');
     $breadcrumb = new Breadcrumb();
     $breadcrumb->addCacheContexts(['route']);

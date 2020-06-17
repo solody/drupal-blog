@@ -34,9 +34,11 @@ class EmptyBlogTest extends BrowserTestBase {
   protected function setUp(): void {
     parent::setUp();
     // Create blogger user with no blog posts.
-    $this->bloggerNoEntries = $this->drupalCreateUser([
-      'create blog_post content',
-    ]);
+    $this->bloggerNoEntries = $this->drupalCreateUser(
+          [
+            'create blog_post content',
+          ]
+      );
   }
 
   /**
