@@ -56,22 +56,28 @@ class MyBlogLinkTest extends BlogTestBase {
   }
 
   /**
-   * Test "Personal blog link" entry on user "Manage display" page.
+   * Test "Personal blog link" entry.
    */
   public function testPersonalBlogLinkWithManageDisplayPage() {
     $this->drupalLogin($this->regularUser);
+    // Add "Personal blog link" psuedo-field.
     $this->drupalGet('admin/config/people/accounts/display');
     $this->assertText('Personal blog link');
-  }
-
-  /**
-   * Test "Personal blog link" on user profile page.
-   */
-  public function testPersonalBlogLink() {
+    $edit = [
+      'fields[blog__personal_blog_link][region]' => 'content',
+      'display_modes_custom[compact]' => TRUE,
+    ];
+    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->drupalLogout();
+    // Test "Personal blog link" on user profile page.
     $this->drupalLogin($this->blogger1);
     $this->drupalGet('user/' . $this->blogger1->id());
     $this->assertLink('View recent blog entries');
-    $this->assertLinkByHref('/blog/' . $this->blogger1->id());
+    $this->assertLinkByHref('blog/' . $this->blogger1->id());
+    // Test "Personal blog link" on content.
+    $node = array_shift($this->blogNodes1);
+    $this->drupalGet('node/' . $node->id());
+    $this->assertNoLink('View recent blog entries');
   }
 
 }

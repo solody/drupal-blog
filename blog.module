@@ -18,6 +18,7 @@ function blog_entity_extra_field_info() {
   $extra['user']['user']['display']['blog__personal_blog_link'] = [
     'label' => t('Personal blog link'),
     'weight' => 0,
+    'visible' => FALSE,
   ];
   return $extra;
 }
@@ -26,7 +27,7 @@ function blog_entity_extra_field_info() {
  * Implements hook_ENTITY_TYPE_view().
  */
 function blog_user_view(&$build, $account, $display, $view_mode) {
-  if ($account->hasPermission('create blog_post content')) {
+  if ($account->hasPermission('create blog_post content') && $display->getComponent('blog__personal_blog_link')) {
     // Build internal link based on router.
     $url = Url::fromRoute('view.blog.blog_user_all', ['arg_0' => $account->id()]);
     $internal_link = Link::fromTextAndUrl(t('View recent blog entries'), $url)->toString();
