@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_blog_tags
+    - field.storage.node.field_blog_categories
     - node.type.blog_post
-    - taxonomy.vocabulary.blog_tags
-id: node.blog_post.field_blog_tags
-field_name: field_blog_tags
+    - taxonomy.vocabulary.blog_categories
+id: node.blog_post.field_blog_categories
+field_name: field_blog_categories
 entity_type: node
 bundle: blog_post
-label: 'Blog tags'
-description: 'Tags to help categorize blog post.'
+label: 'Blog categories'
+description: 'A post can be referenced to one or more categories.'
 required: false
 translatable: false
 default_value: {  }
@@ -19,10 +19,10 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      blog_tags: blog_tags
+      blog_categories: blog_categories
     sort:
-      field: _none
+      field: name
       direction: asc
-    auto_create: true
+    auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference
