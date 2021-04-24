@@ -2,49 +2,38 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.list_item
     - field.field.node.blog_post.body
     - field.field.node.blog_post.field_blog_comments
     - field.field.node.blog_post.field_blog_tags
     - field.field.node.blog_post.field_cover
+    - image.style.blog_list_item
     - node.type.blog_post
   module:
     - image
-    - text
     - user
-id: node.blog_post.teaser
+id: node.blog_post.list_item
 targetEntityType: node
 bundle: blog_post
-mode: teaser
+mode: list_item
 content:
-  body:
-    label: hidden
-    type: text_summary_or_trimmed
-    weight: 2
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    region: content
   field_cover:
-    type: image
-    weight: 1
-    region: content
-    label: above
+    weight: 0
+    label: hidden
     settings:
+      image_style: blog_list_item
+      image_link: content
+      svg_render_as_image: true
       svg_attributes:
         width: null
         height: null
-      svg_render_as_image: true
-      image_style: ''
-      image_link: ''
     third_party_settings: {  }
-  links:
-    weight: 0
+    type: image
     region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  body: true
   field_blog_comments: true
   field_blog_tags: true
   langcode: true
+  links: true
   search_api_excerpt: true

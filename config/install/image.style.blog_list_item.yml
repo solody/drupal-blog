@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: blog_list_item
+label: 'Blog list item'
+effects:
+  9139f0a3-c606-4d87-a61a-e4b41a7f7017:
+    uuid: 9139f0a3-c606-4d87-a61a-e4b41a7f7017
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 80
+      height: 80
+      anchor: center-center

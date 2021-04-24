@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.blog_comment.default
     - field.field.node.blog_post.body
     - field.field.node.blog_post.field_blog_comments
     - field.field.node.blog_post.field_blog_tags
@@ -61,3 +62,4 @@ content:
     third_party_settings: {  }
 hidden:
   langcode: true
+  search_api_excerpt: true
