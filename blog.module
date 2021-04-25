@@ -6,7 +6,9 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 
@@ -29,7 +31,7 @@ function blog_entity_extra_field_info() {
 function blog_user_view(&$build, $account, $display, $view_mode) {
   if ($account->hasPermission('create blog_post content') && $display->getComponent('blog__personal_blog_link')) {
     // Build internal link based on router.
-    $url = Url::fromRoute('view.blog.blog_user_all', ['arg_0' => $account->id()]);
+    $url = Url::fromRoute('view.blog.blog_user_all', ['user' => $account->id()]);
     $internal_link = Link::fromTextAndUrl(t('View recent blog entries'), $url)->toString();
     $build['blog__personal_blog_link'] = [
       '#type' => 'item',
@@ -76,7 +78,7 @@ function blog_node_links_alter(array &$node_links, NodeInterface $entity, array 
           ->getDisplayName(),
       ]),
       'url' => Url::fromRoute('view.blog.blog_user_all', [
-        'arg_0' => $entity->getOwnerId(),
+        'user' => $entity->getOwnerId(),
       ]),
       'attributes' => [
         'title' => t("Read @username's latest blog entries.", [
@@ -134,4 +136,81 @@ function blog_theme_suggestions_views_view_unformatted_alter(array &$suggestions
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   $suggestions[] = 'views_view_unformatted__'.$view->id().'__'.$view->current_display;
+}
+
+
+function blog_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
+
+  if (isset($variables['element']['#form_id'])) {
+    $suggestions[] = 'form_element__' . $variables['element']['#form_id'];
+    $suggestions[] = 'form_element__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
+
+    if ($variables['element']['#form_id'] === 'views_exposed_form' && isset($variables['element']['#form_state_storage']) && isset($variables['element']['#form_state_storage']['view'])) {
+      /** @var \Drupal\views\ViewExecutable $view */
+      $view = $variables['element']['#form_state_storage']['view'];
+
+      $suggestions[] = 'form_element__' . $view->id();
+      $suggestions[] = 'form_element__' . $view->id() . '__' . $variables['element']['#type'];
+    }
+  }
+}
+
+function blog_theme_suggestions_input_alter(array &$suggestions, array $variables) {
+
+  if (isset($variables['element']['#form_id'])) {
+    $suggestions[] = 'input__' . $variables['element']['#form_id'];
+    $suggestions[] = 'input__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
+
+    if ($variables['element']['#form_id'] === 'views_exposed_form' &&
+      isset($variables['element']['#form_state_storage']) &&
+      isset($variables['element']['#form_state_storage']['view'])) {
+
+      /** @var \Drupal\views\ViewExecutable $view */
+      $view = $variables['element']['#form_state_storage']['view'];
+
+      $suggestions[] = 'input__' . $view->id();
+      $suggestions[] = 'input__' . $view->id() . '__' . $variables['element']['#type'];
+    }
+  }
+
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function blog_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  blog_attach_form_id($form, $form_id, $form_state->getStorage());
+}
+
+/**
+ * Attaches form id to all form elements.
+ *
+ * @param array $form
+ *   The form or form element which children should have form id attached.
+ * @param string $form_id
+ *   The form id attached to form elements.
+ */
+function blog_attach_form_id(array &$form, $form_id, $form_state_storage = null) {
+  if (isset($form['#id'])) $view = $form['#id'];
+  if (isset($form['#type']) && $form['#type'] === 'form') $form['#form_state_storage'] = $form_state_storage;
+  foreach (Element::children($form) as $child) {
+    if (!isset($form[$child]['#form_id'])) {
+      $form[$child]['#form_id'] = $form_id;
+      if ($form_id === 'views_exposed_form' && $form_state_storage) {
+        $form[$child]['#form_state_storage'] = $form_state_storage;
+      }
+    }
+    blog_attach_form_id($form[$child], $form_id, $form_state_storage);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function blog_theme() {
+  return [
+    'search_blog' => [
+      'render element' => 'children',
+    ],
+  ];
 }

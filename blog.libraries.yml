@@ -1,0 +1,8 @@
+hide_views_exposed_form:
+  version: VERSION
+  js:
+    js/hide_views_exposed_form.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/jquery.once

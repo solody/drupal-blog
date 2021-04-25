@@ -51,7 +51,7 @@ class BreadcrumbTest extends BlogTestBase {
     $expected_url = Url::fromRoute('view.blog.blog_all')->toString();
     $this->assertTrue(($blogs->getAttribute('href') === $expected_url && $blogs->getHtml() === 'Blogs'), 'Blogs link correctly.');
     $blog_name = $this->container->get('blog.lister')->userBlogTitle($blog_owner);
-    $expected_url = Url::fromRoute('view.blog.blog_user_all', ['arg_0' => $blog_owner->id()])->toString();
+    $expected_url = Url::fromRoute('view.blog.blog_user_all', ['user' => $blog_owner->id()])->toString();
     $this->assertTrue(($personal_blog->getAttribute('href') === $expected_url && $personal_blog->getHtml() === (string) $blog_name), 'Personal blog link correctly.');
   }
 

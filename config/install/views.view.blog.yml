@@ -310,7 +310,7 @@ display:
           exposed: true
           expose:
             operator_id: keys_op
-            label: Search
+            label: 'Search Keywords'
             description: ''
             use_operator: false
             operator: keys_op
@@ -387,7 +387,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: blog/tag/%
+      path: blog/tag/%tag
       display_description: ''
       arguments:
         tid:
@@ -470,7 +470,7 @@ display:
           exposed: true
           expose:
             operator_id: keys_op
-            label: Search
+            label: 'Search Keywords'
             description: ''
             use_operator: false
             operator: keys_op
@@ -518,7 +518,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: user/%/blog
+      path: blog/user/%user
       display_description: ''
       arguments:
         uid:
@@ -632,7 +632,7 @@ display:
           exposed: true
           expose:
             operator_id: keys_op
-            label: Search
+            label: 'Search Keywords'
             description: ''
             use_operator: false
             operator: keys_op
