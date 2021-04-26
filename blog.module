@@ -10,7 +10,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\node\NodeInterface;
+use Drupal\prev_next\PrevNextHelperInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -213,4 +215,62 @@ function blog_theme() {
       'render element' => 'children',
     ],
   ];
+}
+
+
+function blog_preprocess_node(&$variables) {
+
+  $variables['node'] = $variables['elements']['#node'];
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+
+  // add prev and next post
+  if ($node->bundle() === 'blog_post') {
+    /** @var PrevNextHelperInterface $prev_next_helper */
+    $prev_next_helper = \Drupal::service('prev_next.helper');
+    // Get the previous node id
+    $prev_nid = $prev_next_helper->getPrevId($node->id());
+    if ($prev_nid) {
+      $prev_node = \Drupal\node\Entity\Node::load($prev_nid);
+      $cover_url = '';
+      if (!$prev_node->get('field_cover')->isEmpty()) {
+        $file = $prev_node->field_cover[0]->entity;
+        // Get origin image URI.
+        $image_uri = $file->getFileUri();
+        // Load image style "thumbnail".
+        $style = ImageStyle::load('blog_list_item');
+        // Get URI.
+        $uri = $style->buildUri($image_uri);
+        $cover_url = file_create_url($uri);
+      }
+
+      $variables['prev_post'] = [
+        'url' => $prev_node->toUrl(),
+        'title' => $prev_node->label(),
+        'cover' => $cover_url
+      ];
+    }
+
+    // Get the next node id
+    $next_nid = $prev_next_helper->getNextId($node->id());
+    if ($next_nid) {
+      $next_node = \Drupal\node\Entity\Node::load($next_nid);
+      $cover_url = '';
+      if (!$next_node->get('field_cover')->isEmpty()) {
+        $file = $next_node->field_cover[0]->entity;
+        // Get origin image URI.
+        $image_uri = $file->getFileUri();
+        // Load image style "thumbnail".
+        $style = ImageStyle::load('blog_list_item');
+        // Get URI.
+        $uri = $style->buildUri($image_uri);
+        $cover_url = file_create_url($uri);
+      }
+      $variables['next_post'] = [
+        'url' => $next_node->toUrl(),
+        'title' => $next_node->label(),
+        'cover' => $cover_url
+      ];
+    }
+  }
 }

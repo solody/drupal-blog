@@ -40,7 +40,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    label: above
+    label: hidden
     region: content
   field_cover:
     weight: 1
@@ -57,6 +57,11 @@ content:
     region: content
   links:
     weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  sharing_buttons:
+    weight: 100
     region: content
     settings: {  }
     third_party_settings: {  }

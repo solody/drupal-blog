@@ -29,7 +29,7 @@ content:
     type: image
     weight: 1
     region: content
-    label: above
+    label: hidden
     settings:
       svg_attributes:
         width: null
@@ -48,3 +48,4 @@ hidden:
   field_blog_tags: true
   langcode: true
   search_api_excerpt: true
+  sharing_buttons: true

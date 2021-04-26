@@ -13,3 +13,5 @@ dependencies:
   - drupal:text
   - drupal:user
   - drupal:views
+  - better_social_sharing_buttons:better_social_sharing_buttons
+  - prev_next:prev_next
