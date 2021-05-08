@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.blog_post.field_cover
     - node.type.blog_post
   module:
-    - image
+    - svg_image
     - text
     - user
 id: node.blog_post.teaser

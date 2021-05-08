@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.profile.field_profile
+    - profile.type.blog_author
+id: profile.blog_author.field_profile
+field_name: field_profile
+entity_type: profile
+bundle: blog_author
+label: Profile
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

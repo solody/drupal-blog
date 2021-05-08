@@ -1,17 +1,26 @@
 name: Blog
-description: "Enables multi-user blogs."
-core_version_requirement: ^8.8 || ^9
+description: 'Enables multi-user blogs.'
+core_version_requirement: '^8.9 || ^9'
 type: module
 dependencies:
-  - drupal:comment
-  - drupal:menu_ui
-  - drupal:file
-  - drupal:image
-  - drupal:node
-  - drupal:path
-  - drupal:taxonomy
-  - drupal:text
-  - drupal:user
-  - drupal:views
-  - better_social_sharing_buttons:better_social_sharing_buttons
-  - prev_next:prev_next
+  - 'better_social_sharing_buttons:better_social_sharing_buttons'
+  - 'drupal:block'
+  - 'drupal:comment'
+  - 'drupal:field'
+  - 'drupal:file'
+  - 'drupal:image'
+  - 'drupal:language'
+  - 'drupal:menu_ui'
+  - 'drupal:node'
+  - 'drupal:path'
+  - 'drupal:search'
+  - 'drupal:system'
+  - 'drupal:taxonomy'
+  - 'drupal:text'
+  - 'drupal:user'
+  - 'drupal:views'
+  - 'facets:facets'
+  - 'features:features'
+  - 'prev_next:prev_next'
+  - 'profile:profile'
+  - 'svg_image:svg_image'

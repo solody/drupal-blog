@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.profile.blog_author.field_name
+    - field.field.profile.blog_author.field_profile
+    - profile.type.blog_author
+id: profile.blog_author.default
+targetEntityType: profile
+bundle: blog_author
+mode: default
+content:
+  field_name:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_profile:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  is_default: true

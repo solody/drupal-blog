@@ -354,7 +354,7 @@ display:
   blog_block:
     display_plugin: block
     id: blog_block
-    display_title: Block
+    display_title: 'Recent posts'
     position: 5
     display_options:
       display_extenders: {  }

@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\node\NodeInterface;
 use Drupal\prev_next\PrevNextHelperInterface;
@@ -177,6 +178,47 @@ function blog_theme_suggestions_input_alter(array &$suggestions, array $variable
 
 }
 
+
+function blog_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
+
+  if (isset($variables['element']['#form_id'])) {
+    $suggestions[] = 'textarea__' . $variables['element']['#form_id'];
+    $suggestions[] = 'textarea__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
+
+    if ($variables['element']['#form_id'] === 'views_exposed_form' &&
+      isset($variables['element']['#form_state_storage']) &&
+      isset($variables['element']['#form_state_storage']['view'])) {
+
+      /** @var \Drupal\views\ViewExecutable $view */
+      $view = $variables['element']['#form_state_storage']['view'];
+
+      $suggestions[] = 'textarea__' . $view->id();
+      $suggestions[] = 'textarea__' . $view->id() . '__' . $variables['element']['#type'];
+    }
+  }
+
+}
+
+function blog_theme_suggestions_select_alter(array &$suggestions, array $variables) {
+
+  if (isset($variables['element']['#form_id'])) {
+    $suggestions[] = 'select__' . $variables['element']['#form_id'];
+    $suggestions[] = 'select__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
+
+    if ($variables['element']['#form_id'] === 'views_exposed_form' &&
+      isset($variables['element']['#form_state_storage']) &&
+      isset($variables['element']['#form_state_storage']['view'])) {
+
+      /** @var \Drupal\views\ViewExecutable $view */
+      $view = $variables['element']['#form_state_storage']['view'];
+
+      $suggestions[] = 'select__' . $view->id();
+      $suggestions[] = 'selectselect.html.twig__' . $view->id() . '__' . $variables['element']['#type'];
+    }
+  }
+
+}
+
 /**
  * Implements hook_form_alter().
  */
@@ -224,7 +266,7 @@ function blog_preprocess_node(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['node'];
 
-  // add prev and next post
+  // add prev and next post, author profile
   if ($node->bundle() === 'blog_post') {
     /** @var PrevNextHelperInterface $prev_next_helper */
     $prev_next_helper = \Drupal::service('prev_next.helper');
@@ -271,6 +313,31 @@ function blog_preprocess_node(&$variables) {
         'title' => $next_node->label(),
         'cover' => $cover_url
       ];
+    }
+
+    $author_user = $node->getOwner();
+    $variables['author_profile'] = [
+      'author_url' => $author_user->toUrl()
+    ];
+    if (!$author_user->get('user_picture')->isEmpty()) {
+      $file = $author_user->user_picture[0]->entity;
+      // Get origin image URI.
+      $image_uri = $file->getFileUri();
+      $variables['author_profile']['picture'] = file_create_url($image_uri);
+    } else {
+      // get default user picture
+      $field_info = FieldConfig::loadByName('user', 'user', 'user_picture');
+      $image_uuid = $field_info->getSetting('default_image')['uuid'];
+      $image = Drupal::service('entity.repository')->loadEntityByUuid('file', $image_uuid);
+      $image_uri = $image->getFileUri();
+      $variables['author_profile']['picture'] = file_create_url($image_uri);
+    }
+
+    if (!$author_user->get('blog_author_profiles')->isEmpty()) {
+      /** @var \Drupal\profile\Entity\ProfileInterface $profile */
+      $profile = $author_user->blog_author_profiles[0]->entity;
+      $variables['author_profile']['name'] = $profile->field_name->value;
+      $variables['author_profile']['profile'] = $profile->field_profile->value;
     }
   }
 }

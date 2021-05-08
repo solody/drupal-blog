@@ -15,7 +15,8 @@ description: 'Comments against a blog post.'
 required: false
 translatable: false
 default_value:
-  - status: 2
+  -
+    status: 2
     cid: 0
     last_comment_timestamp: 0
     last_comment_name: null
