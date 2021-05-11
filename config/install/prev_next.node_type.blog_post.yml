@@ -2,5 +2,5 @@ include: true
 current: ''
 indexing_criteria: nid
 indexing_criteria_current: null
-same_type: false
+same_type: true
 same_type_current: ''

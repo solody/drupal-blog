@@ -2,3 +2,9 @@ blog.myblog_link:
   title: 'My blog'
   class: Drupal\blog\Plugin\Menu\MyBlogLink
   menu_name: account
+
+blog.all:
+  title: 'Blog'
+  route_name: 'view.blog.blog_all'
+  menu_name: main
+  weight: 99

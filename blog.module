@@ -275,7 +275,7 @@ function blog_preprocess_node(&$variables) {
     if ($prev_nid) {
       $prev_node = \Drupal\node\Entity\Node::load($prev_nid);
       $cover_url = '';
-      if (!$prev_node->get('field_cover')->isEmpty()) {
+      if ($prev_node->hasField('field_cover') && !$prev_node->get('field_cover')->isEmpty()) {
         $file = $prev_node->field_cover[0]->entity;
         // Get origin image URI.
         $image_uri = $file->getFileUri();
@@ -298,7 +298,7 @@ function blog_preprocess_node(&$variables) {
     if ($next_nid) {
       $next_node = \Drupal\node\Entity\Node::load($next_nid);
       $cover_url = '';
-      if (!$next_node->get('field_cover')->isEmpty()) {
+      if ($next_node->hasField('field_cover') && !$next_node->get('field_cover')->isEmpty()) {
         $file = $next_node->field_cover[0]->entity;
         // Get origin image URI.
         $image_uri = $file->getFileUri();

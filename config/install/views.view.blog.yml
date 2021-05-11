@@ -371,6 +371,7 @@ display:
         options:
           relationship: none
           view_mode: list_item
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
