@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: paragraph_article_item
+label: 'Paragraph article item'
+effects:
+  ce0e6be1-8556-4f7f-a5b8-a3bcdc211c9a:
+    uuid: ce0e6be1-8556-4f7f-a5b8-a3bcdc211c9a
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 360
+      height: 320
+      anchor: center-center
