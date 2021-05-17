@@ -3,18 +3,15 @@ status: true
 dependencies:
   config:
     - comment.type.blog_comment
-    - field.storage.comment.comment_body
-  module:
-    - text
-id: comment.blog_comment.comment_body
-field_name: comment_body
+id: comment.blog_comment.subject
+field_name: subject
 entity_type: comment
 bundle: blog_comment
-label: Comment
+label: Subject
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: text_long
+field_type: string

@@ -3,18 +3,15 @@ status: true
 dependencies:
   config:
     - comment.type.blog_comment
-    - field.storage.comment.comment_body
-  module:
-    - text
-id: comment.blog_comment.comment_body
-field_name: comment_body
+id: comment.blog_comment.homepage
+field_name: homepage
 entity_type: comment
 bundle: blog_comment
-label: Comment
-description: ''
-required: true
+label: Homepage
+description: 'The comment author''s home page address.'
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: text_long
+field_type: uri

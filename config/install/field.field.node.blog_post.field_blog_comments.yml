@@ -13,7 +13,7 @@ bundle: blog_post
 label: 'Blog comments'
 description: 'Comments against a blog post.'
 required: false
-translatable: false
+translatable: true
 default_value:
   -
     status: 2

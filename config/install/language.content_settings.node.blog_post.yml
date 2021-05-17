@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - taxonomy.vocabulary.blog_tags
+    - node.type.blog_post
   module:
     - content_translation
 third_party_settings:
@@ -10,8 +10,8 @@ third_party_settings:
     enabled: true
     bundle_settings:
       untranslatable_fields_hide: '1'
-id: taxonomy_term.blog_tags
-target_entity_type_id: taxonomy_term
-target_bundle: blog_tags
+id: node.blog_post
+target_entity_type_id: node
+target_bundle: blog_post
 default_langcode: site_default
 language_alterable: true
