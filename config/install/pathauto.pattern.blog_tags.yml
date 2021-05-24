@@ -1,0 +1,22 @@
+langcode: cn
+status: true
+dependencies:
+  module:
+    - ctools
+    - taxonomy
+id: blog_tags
+label: 'blog tags'
+type: 'canonical_entities:taxonomy_term'
+pattern: '/blog/tags/[term:tid]'
+selection_criteria:
+  88f8bbbf-1386-46d5-aada-bf83d1fa185a:
+    id: 'entity_bundle:taxonomy_term'
+    bundles:
+      blog_tags: blog_tags
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    uuid: 88f8bbbf-1386-46d5-aada-bf83d1fa185a
+selection_logic: and
+weight: -5
+relationships: {  }

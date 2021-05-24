@@ -2,4 +2,7 @@ excluded:
   - block.block.cattask_alpha_blog_tags
   - block.block.cattask_alpha_recent_blogs
   - block.block.cattask_alpha_search_blog
+  - block.block.stable_blog_tags
+  - block.block.stable_recent_blogs
+  - block.block.stable_search_blog
 required: true

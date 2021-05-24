@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
-    - profile
-id: profile.field_profile
-field_name: field_profile
-entity_type: profile
-type: string_long
-settings:
-  case_sensitive: false
-module: core
+    - metatag
+    - node
+id: node.field_meta_tags
+field_name: field_meta_tags
+entity_type: node
+type: metatag
+settings: {  }
+module: metatag
 locked: false
 cardinality: 1
 translatable: true

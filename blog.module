@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
@@ -274,6 +276,10 @@ function blog_preprocess_node(&$variables) {
     $prev_nid = $prev_next_helper->getPrevId($node->id());
     if ($prev_nid) {
       $prev_node = \Drupal\node\Entity\Node::load($prev_nid);
+      $language = $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      if ($prev_node->hasTranslation($language)) {
+        $prev_node = $prev_node->getTranslation($language);
+      }
       $cover_url = '';
       if ($prev_node->hasField('field_cover') && !$prev_node->get('field_cover')->isEmpty()) {
         $file = $prev_node->field_cover[0]->entity;
@@ -287,6 +293,7 @@ function blog_preprocess_node(&$variables) {
       }
 
       $variables['prev_post'] = [
+        'label' => t('Prev Post'),
         'url' => $prev_node->toUrl(),
         'title' => $prev_node->label(),
         'cover' => $cover_url
@@ -297,6 +304,10 @@ function blog_preprocess_node(&$variables) {
     $next_nid = $prev_next_helper->getNextId($node->id());
     if ($next_nid) {
       $next_node = \Drupal\node\Entity\Node::load($next_nid);
+      $language = $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      if ($next_node->hasTranslation($language)) {
+        $next_node = $next_node->getTranslation($language);
+      }
       $cover_url = '';
       if ($next_node->hasField('field_cover') && !$next_node->get('field_cover')->isEmpty()) {
         $file = $next_node->field_cover[0]->entity;
@@ -309,6 +320,7 @@ function blog_preprocess_node(&$variables) {
         $cover_url = file_create_url($uri);
       }
       $variables['next_post'] = [
+        'label' => t('Next Post'),
         'url' => $next_node->toUrl(),
         'title' => $next_node->label(),
         'cover' => $cover_url
@@ -316,8 +328,14 @@ function blog_preprocess_node(&$variables) {
     }
 
     $author_user = $node->getOwner();
+    $language = $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    if ($author_user->hasTranslation($language)) {
+      $author_user = $author_user->getTranslation($language);
+    }
     $variables['author_profile'] = [
-      'author_url' => $author_user->toUrl()
+      'author_url' => $author_user->toUrl(),
+      'name' => '',
+      'profile' => ''
     ];
     if (!$author_user->get('user_picture')->isEmpty()) {
       $file = $author_user->user_picture[0]->entity;
@@ -333,11 +351,56 @@ function blog_preprocess_node(&$variables) {
       $variables['author_profile']['picture'] = file_create_url($image_uri);
     }
 
-    if (!$author_user->get('blog_author_profiles')->isEmpty()) {
-      /** @var \Drupal\profile\Entity\ProfileInterface $profile */
-      $profile = $author_user->blog_author_profiles[0]->entity;
-      $variables['author_profile']['name'] = $profile->field_name->value;
-      $variables['author_profile']['profile'] = $profile->field_profile->value;
+    if (!$author_user->get('blog_author_name')->isEmpty()) {
+      $variables['author_profile']['name'] = $author_user->blog_author_name->value;
+    }
+
+    if (!$author_user->get('blog_author_profile')->isEmpty()) {
+      $variables['author_profile']['profile'] = $author_user->blog_author_profile->value;
     }
   }
+}
+
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function blog_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() == 'user') {
+    $fields['blog_author_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Blog author name'))
+      ->setDescription(t('Name of the blog author.'))
+      ->setRevisionable(FALSE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string'
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 20
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['blog_author_profile'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Blog author profile'))
+      ->setDescription(t('Description of the blog author.'))
+      ->setRevisionable(FALSE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'basic_string'
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textarea',
+        'weight' => 20
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+  }
+
+  return $fields;
 }

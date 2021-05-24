@@ -5,6 +5,7 @@ type: module
 dependencies:
   - 'better_social_sharing_buttons:better_social_sharing_buttons'
   - 'blog:blog'
+  - 'ctools:ctools'
   - 'drupal:block'
   - 'drupal:comment'
   - 'drupal:content_translation'
@@ -23,6 +24,11 @@ dependencies:
   - 'drupal:views'
   - 'facets:facets'
   - 'features:features'
+  - 'metatag:metatag'
+  - 'pathauto:pathauto'
   - 'prev_next:prev_next'
   - 'profile:profile'
   - 'svg_image:svg_image'
+  - 'yoast_seo:yoast_seo'
+'interface translation project': blog
+'interface translation server pattern': modules/custom/blog/translations/%project.%language.po
