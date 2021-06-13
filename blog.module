@@ -404,3 +404,13 @@ function blog_entity_base_field_info(EntityTypeInterface $entity_type) {
 
   return $fields;
 }
+
+
+
+function blog_preprocess_field(&$variables) {
+  $element = $variables['element'];
+  if ($element['#field_type'] == 'comment') {
+    // Provide contextual information.
+    $variables['comment_form_headline'] = t('Leave a Reply');
+  }
+}

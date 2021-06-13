@@ -25,6 +25,7 @@ class SearchBlog extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Keywords'),
       '#title_display' => 'invisible',
+      '#placeholder' => $this->t('Input keywords to search.'),
       '#default_value' => $form_state->getUserInput()['keywords'] ?? $this->getRequest()->query->get('keywords'),
       '#maxlength' => 64,
       '#size' => 64,

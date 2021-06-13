@@ -18,3 +18,20 @@ msgid "Prev Post"
 msgstr "上一篇"
 msgid "Next Post"
 msgstr "下一篇"
+
+
+msgid "Leave a Reply"
+msgstr "写个评论"
+
+msgid "Input keywords to search."
+msgstr "输入要搜索的关键词。"
+msgid "Search"
+msgstr "搜索"
+msgid "@username's blog"
+msgstr "@username 的博客"
+msgid "@username's Blog"
+msgstr "@username 的博客"
+
+msgid "Blog tags"
+msgstr "博客分类"
+
