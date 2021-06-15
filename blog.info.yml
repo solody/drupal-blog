@@ -31,4 +31,4 @@ dependencies:
   - 'svg_image:svg_image'
   - 'yoast_seo:yoast_seo'
 'interface translation project': blog
-'interface translation server pattern': modules/custom/blog/translations/%project.%language.po
+'interface translation server pattern': translations/%project.%language.po

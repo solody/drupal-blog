@@ -414,3 +414,12 @@ function blog_preprocess_field(&$variables) {
     $variables['comment_form_headline'] = t('Leave a Reply');
   }
 }
+
+
+function blog_locale_translation_projects_alter(&$projects) {
+  // The translations are located at a custom translation sever
+  $module_handler = \Drupal::service('module_handler');
+  $module_path = $module_handler->getModule('blog')->getPath();
+  $projects['blog']['info']['interface translation server pattern']
+    = $module_path . '/' . $projects['blog']['info']['interface translation server pattern'];
+}
