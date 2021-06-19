@@ -65,9 +65,9 @@ class MyBlogLink extends MenuLinkDefault {
   public function getRouteParameters() {
     if ($this->currentUser->isAuthenticated()) {
       $uid = $this->currentUser->id();
-      return ['arg_0' => $uid];
+      return ['user' => $uid];
     }
-    return ['arg_0' => 0];
+    return ['user' => 0];
   }
 
 }
