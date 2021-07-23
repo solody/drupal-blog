@@ -125,131 +125,6 @@ function _blog_post_exists($account) {
     ->fetchField();
 }
 
-
-function blog_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
-  /** @var \Drupal\views\ViewExecutable $view */
-  $view = $variables['view'];
-  $suggestions[] = 'views_view__'.$view->id().'__'.$view->current_display;
-}
-function blog_theme_suggestions_views_view_summary_alter(array &$suggestions, array $variables) {
-  /** @var \Drupal\views\ViewExecutable $view */
-  $view = $variables['view'];
-  $suggestions[] = 'views_view_summary__'.$view->id().'__'.$view->current_display;
-}
-
-function blog_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
-  /** @var \Drupal\views\ViewExecutable $view */
-  $view = $variables['view'];
-  $suggestions[] = 'views_view_unformatted__'.$view->id().'__'.$view->current_display;
-}
-
-
-function blog_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
-
-  if (isset($variables['element']['#form_id'])) {
-    $suggestions[] = 'form_element__' . $variables['element']['#form_id'];
-    $suggestions[] = 'form_element__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
-
-    if ($variables['element']['#form_id'] === 'views_exposed_form' && isset($variables['element']['#form_state_storage']) && isset($variables['element']['#form_state_storage']['view'])) {
-      /** @var \Drupal\views\ViewExecutable $view */
-      $view = $variables['element']['#form_state_storage']['view'];
-
-      $suggestions[] = 'form_element__' . $view->id();
-      $suggestions[] = 'form_element__' . $view->id() . '__' . $variables['element']['#type'];
-    }
-  }
-}
-
-function blog_theme_suggestions_input_alter(array &$suggestions, array $variables) {
-
-  if (isset($variables['element']['#form_id'])) {
-    $suggestions[] = 'input__' . $variables['element']['#form_id'];
-    $suggestions[] = 'input__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
-
-    if ($variables['element']['#form_id'] === 'views_exposed_form' &&
-      isset($variables['element']['#form_state_storage']) &&
-      isset($variables['element']['#form_state_storage']['view'])) {
-
-      /** @var \Drupal\views\ViewExecutable $view */
-      $view = $variables['element']['#form_state_storage']['view'];
-
-      $suggestions[] = 'input__' . $view->id();
-      $suggestions[] = 'input__' . $view->id() . '__' . $variables['element']['#type'];
-    }
-  }
-
-}
-
-
-function blog_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
-
-  if (isset($variables['element']['#form_id'])) {
-    $suggestions[] = 'textarea__' . $variables['element']['#form_id'];
-    $suggestions[] = 'textarea__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
-
-    if ($variables['element']['#form_id'] === 'views_exposed_form' &&
-      isset($variables['element']['#form_state_storage']) &&
-      isset($variables['element']['#form_state_storage']['view'])) {
-
-      /** @var \Drupal\views\ViewExecutable $view */
-      $view = $variables['element']['#form_state_storage']['view'];
-
-      $suggestions[] = 'textarea__' . $view->id();
-      $suggestions[] = 'textarea__' . $view->id() . '__' . $variables['element']['#type'];
-    }
-  }
-
-}
-
-function blog_theme_suggestions_select_alter(array &$suggestions, array $variables) {
-
-  if (isset($variables['element']['#form_id'])) {
-    $suggestions[] = 'select__' . $variables['element']['#form_id'];
-    $suggestions[] = 'select__' . $variables['element']['#form_id'] . '__' . $variables['element']['#type'];
-
-    if ($variables['element']['#form_id'] === 'views_exposed_form' &&
-      isset($variables['element']['#form_state_storage']) &&
-      isset($variables['element']['#form_state_storage']['view'])) {
-
-      /** @var \Drupal\views\ViewExecutable $view */
-      $view = $variables['element']['#form_state_storage']['view'];
-
-      $suggestions[] = 'select__' . $view->id();
-      $suggestions[] = 'selectselect.html.twig__' . $view->id() . '__' . $variables['element']['#type'];
-    }
-  }
-
-}
-
-/**
- * Implements hook_form_alter().
- */
-function blog_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  blog_attach_form_id($form, $form_id, $form_state->getStorage());
-}
-
-/**
- * Attaches form id to all form elements.
- *
- * @param array $form
- *   The form or form element which children should have form id attached.
- * @param string $form_id
- *   The form id attached to form elements.
- */
-function blog_attach_form_id(array &$form, $form_id, $form_state_storage = null) {
-  if (isset($form['#id'])) $view = $form['#id'];
-  if (isset($form['#type']) && $form['#type'] === 'form') $form['#form_state_storage'] = $form_state_storage;
-  foreach (Element::children($form) as $child) {
-    if (!isset($form[$child]['#form_id'])) {
-      $form[$child]['#form_id'] = $form_id;
-      if ($form_id === 'views_exposed_form' && $form_state_storage) {
-        $form[$child]['#form_state_storage'] = $form_state_storage;
-      }
-    }
-    blog_attach_form_id($form[$child], $form_id, $form_state_storage);
-  }
-}
-
 /**
  * Implements hook_theme().
  */
@@ -260,7 +135,6 @@ function blog_theme() {
     ],
   ];
 }
-
 
 function blog_preprocess_node(&$variables) {
 
@@ -361,7 +235,6 @@ function blog_preprocess_node(&$variables) {
   }
 }
 
-
 /**
  * Implements hook_entity_base_field_info().
  */
@@ -405,8 +278,6 @@ function blog_entity_base_field_info(EntityTypeInterface $entity_type) {
   return $fields;
 }
 
-
-
 function blog_preprocess_field(&$variables) {
   $element = $variables['element'];
   if ($element['#field_type'] == 'comment') {
@@ -414,7 +285,6 @@ function blog_preprocess_field(&$variables) {
     $variables['comment_form_headline'] = t('Leave a Reply');
   }
 }
-
 
 function blog_locale_translation_projects_alter(&$projects) {
   // The translations are located at a custom translation sever

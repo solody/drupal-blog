@@ -30,5 +30,6 @@ dependencies:
   - 'profile:profile'
   - 'svg_image:svg_image'
   - 'yoast_seo:yoast_seo'
+  - 'themable:themable'
 'interface translation project': blog
 'interface translation server pattern': translations/%project.%language.po
