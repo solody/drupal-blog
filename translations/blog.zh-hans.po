@@ -38,4 +38,6 @@ msgid "Blog author name"
 msgstr "作者"
 msgid "Blog author profile"
 msgstr "作者简介"
+msgid "Create new blog entry"
+msgstr "创建一篇新博文"
 
