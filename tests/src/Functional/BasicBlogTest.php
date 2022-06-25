@@ -65,7 +65,7 @@ class BasicBlogTest extends BlogTestBase {
    */
   public function testBlogBlock() {
     // Place the recent blog posts block.
-    $blog_block = $this->drupalPlaceBlock('blog_blockblock-views-block-blog-blog-block');
+    $blog_block = $this->drupalPlaceBlock('views_block:blog-blog_block');
     // Verify the blog block was displayed.
     $this->drupalGet('<front>');
     $this->assertBlockAppears($blog_block);
