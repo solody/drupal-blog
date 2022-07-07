@@ -69,7 +69,7 @@ function blog_help($path, $arg) {
  */
 function blog_node_links_alter(array &$node_links, NodeInterface $entity, array &$context) {
   if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'blog_post' && $context['view_mode'] != 'rss') {
-
+    $links = [];
     $links['blog_usernames_blog'] = [
       'title' => t("@username's Blog", [
         '@username' => $entity->getOwner()
