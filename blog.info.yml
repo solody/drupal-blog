@@ -1,6 +1,6 @@
 name: Blog
 description: "Enables multi-user blogs."
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9 || ^10
 type: module
 dependencies:
   - drupal:comment
