@@ -1,9 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - blog
   config:
     - field.storage.node.body
     - node.type.blog_post
@@ -21,4 +18,5 @@ default_value: {  }
 default_value_callback: ''
 settings:
   display_summary: true
+  required_summary: false
 field_type: text_with_summary

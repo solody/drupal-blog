@@ -1,9 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - blog
   config:
     - field.storage.node.field_blog_comments
     - node.type.blog_post
@@ -18,7 +15,8 @@ description: 'Comments against a blog post.'
 required: false
 translatable: false
 default_value:
-  - status: 2
+  -
+    status: 2
     cid: 0
     last_comment_timestamp: 0
     last_comment_name: null

@@ -1,9 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - blog
   config:
     - field.field.node.blog_post.body
     - field.field.node.blog_post.field_blog_comments
@@ -24,6 +21,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     label: hidden
+    region: content
   field_blog_comments:
     type: comment_default
     weight: 102
@@ -31,6 +29,7 @@ content:
       pager_id: 0
     third_party_settings: {  }
     label: above
+    region: content
   field_blog_tags:
     type: entity_reference_label
     weight: 103
@@ -38,8 +37,10 @@ content:
       link: true
     third_party_settings: {  }
     label: above
+    region: content
   links:
     weight: 100
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden: {  }
