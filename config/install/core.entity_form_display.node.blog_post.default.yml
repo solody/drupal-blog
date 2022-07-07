@@ -1,6 +1,9 @@
 langcode: en
 status: true
 dependencies:
+  enforced:
+    module:
+      - blog
   config:
     - field.field.node.blog_post.body
     - field.field.node.blog_post.field_blog_comments
