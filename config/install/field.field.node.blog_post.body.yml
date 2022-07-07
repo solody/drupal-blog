@@ -1,6 +1,9 @@
 langcode: en
 status: true
 dependencies:
+  enforced:
+    module:
+      - blog
   config:
     - field.storage.node.body
     - node.type.blog_post
