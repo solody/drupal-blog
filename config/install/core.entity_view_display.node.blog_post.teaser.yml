@@ -1,9 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - blog
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.blog_post.body
@@ -25,8 +22,10 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
+    region: content
   links:
     weight: 100
+    region: content
 hidden:
   field_blog_comments: true
   field_blog_tags: true
