@@ -10,16 +10,9 @@
  */
 function blog_update_9001(&$sandbox) {
   $config_items = [
-    'core.entity_form_display.node.blog_post.default',
-    'core.entity_view_display.node.blog_post.default',
-    'core.entity_view_display.node.blog_post.teaser',
-    'field.field.node.blog_post.body',
-    'field.field.node.blog_post.field_blog_comments',
-    'field.field.node.blog_post.field_blog_tags',
     'field.storage.node.field_blog_comments',
     'field.storage.node.field_blog_tags',
     'node.type.blog_post',
-    'views.view.blog',
   ];
   foreach ($config_items as $config_item) {
     $config = \Drupal::configFactory()->getEditable($config_item);
