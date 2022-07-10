@@ -9,3 +9,10 @@ services:
     arguments: ['@blog.lister']
     tags:
       - { name: breadcrumb_builder, priority: 100 }
+  blog.uninstall_validator:
+    class: Drupal\blog\BlogUninstallValidator
+    arguments:
+      - '@string_translation'
+    tags:
+      - { name: module_install.uninstall_validator }
+    lazy: true
