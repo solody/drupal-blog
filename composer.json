@@ -29,7 +29,8 @@
         "drupal/core": "^8.8 || ^9",
         "drupal/features": "^3.11",
         "drupal/better_social_sharing_buttons": "^3.1",
-        "drupal/prev_next": "^2.0@alpha"
+        "drupal/prev_next": "^2.0@alpha",
+        "drupal/themable": "^1.0"
     },
     "license": "GPL-2.0+",
     "minimum-stability": "dev"
