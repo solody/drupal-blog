@@ -40,8 +40,8 @@ class BlogLister implements BlogListerInterface {
    * @param \Drupal\user\UserInterface $user
    *   User object.
    *
-   * @return string
-   *   Title string
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   Title string.
    */
   public function userBlogTitle(UserInterface $user) {
     return new TranslatableMarkup("@username's blog", ['@username' => $user->getDisplayName()]);

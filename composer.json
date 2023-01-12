@@ -26,7 +26,7 @@
         "source": "https://git.drupalcode.org/project/blog"
     },
     "require": {
-        "drupal/core": "^8.8 || ^9",
+        "drupal/core": "^9 || ^10",
         "drupal/features": "^3.11",
         "drupal/better_social_sharing_buttons": "^3.1",
         "drupal/prev_next": "^2.0@alpha",

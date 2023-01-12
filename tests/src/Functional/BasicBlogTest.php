@@ -45,8 +45,8 @@ class BasicBlogTest extends BlogTestBase {
   public function testPersonalBlogTitle() {
     $this->drupalLogin($this->regularUser);
     $this->drupalGet('blog/' . $this->blogger1->id());
-    $this->assertResponse(200);
-    $this->assertTitle($this->blogger1->getDisplayName() . "'s blog | Drupal");
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->titleEquals($this->blogger1->getDisplayName() . "'s blog | Drupal");
   }
 
   /**
@@ -55,9 +55,9 @@ class BasicBlogTest extends BlogTestBase {
   public function testBlogPageNoEntries() {
     $this->drupalLogin($this->regularUser);
     $this->drupalGet('blog/' . $this->bloggerNoEntries->id());
-    $this->assertResponse(200);
-    $this->assertTitle($this->bloggerNoEntries->getDisplayName() . "'s blog | Drupal");
-    $this->assertText($this->bloggerNoEntries->getDisplayName() . ' has not created any blog entries.');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->titleEquals($this->bloggerNoEntries->getDisplayName() . "'s blog | Drupal");
+    $this->assertSession()->pageTextContains($this->bloggerNoEntries->getDisplayName() . ' has not created any blog entries.');
   }
 
   /**
@@ -65,7 +65,7 @@ class BasicBlogTest extends BlogTestBase {
    */
   public function testBlogBlock() {
     // Place the recent blog posts block.
-    $blog_block = $this->drupalPlaceBlock('blog_blockblock-views-block-blog-blog-block');
+    $blog_block = $this->drupalPlaceBlock('views_block:blog-blog_block');
     // Verify the blog block was displayed.
     $this->drupalGet('<front>');
     $this->assertBlockAppears($blog_block);

@@ -45,14 +45,14 @@ class BreadcrumbTest extends BlogTestBase {
     $links = $this->getSession()
       ->getPage()
       ->findAll('css', '#block-breadcrumb li a');
-    $this->assertEquals(count($links), 3, 'Breadcrumb element number is correctly.');
+    $this::assertEquals(count($links), 3, 'Breadcrumb element number is correctly.');
     [$home, $blogs, $personal_blog] = $links;
-    $this->assertTrue(($home->getAttribute('href') === base_path() && $home->getHtml() === 'Home'), 'Home link correctly.');
+    $this::assertTrue(($home->getAttribute('href') === base_path() && $home->getHtml() === 'Home'), 'Home link correctly.');
     $expected_url = Url::fromRoute('view.blog.blog_all')->toString();
-    $this->assertTrue(($blogs->getAttribute('href') === $expected_url && $blogs->getHtml() === 'Blogs'), 'Blogs link correctly.');
+    $this::assertTrue(($blogs->getAttribute('href') === $expected_url && $blogs->getHtml() === 'Blogs'), 'Blogs link correctly.');
     $blog_name = $this->container->get('blog.lister')->userBlogTitle($blog_owner);
-    $expected_url = Url::fromRoute('view.blog.blog_user_all', ['user' => $blog_owner->id()])->toString();
-    $this->assertTrue(($personal_blog->getAttribute('href') === $expected_url && $personal_blog->getHtml() === (string) $blog_name), 'Personal blog link correctly.');
+    $expected_url = Url::fromRoute('view.blog.blog_user_all', ['arg_0' => $blog_owner->id()])->toString();
+    $this::assertTrue(($personal_blog->getAttribute('href') === $expected_url && $personal_blog->getHtml() === (string) $blog_name), 'Personal blog link correctly.');
   }
 
   /**
@@ -67,7 +67,7 @@ class BreadcrumbTest extends BlogTestBase {
       ->getPage()
       ->findAll('css', '#block-breadcrumb li a');
     $link = array_pop($links);
-    $this->assertFalse($link->getHtml() === $blog_name, 'Other node type breadcrumb is correct.');
+    $this::assertFalse($link->getHtml() === $blog_name, 'Other node type breadcrumb is correct.');
   }
 
 }

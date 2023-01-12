@@ -76,7 +76,7 @@ function blog_help($path, $arg) {
  */
 function blog_node_links_alter(array &$node_links, NodeInterface $entity, array &$context) {
   if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'blog_post' && $context['view_mode'] != 'rss') {
-
+    $links = [];
     $links['blog_usernames_blog'] = [
       'title' => t("@username's Blog", [
         '@username' => $entity->getOwner()
@@ -101,28 +101,24 @@ function blog_node_links_alter(array &$node_links, NodeInterface $entity, array 
 }
 
 /**
- * Access callback for user blog pages.
- */
-function blog_page_user_access($account) {
-  // The visitor must be able to access the site's content.
-  // For a blog to 'exist' the user must either be able to
-  // create new blog entries, or it must have existing posts.
-  return $account->id() && $account->hasPermission('access content') && ($account->hasPermission('create blog content', $account) || _blog_post_exists($account));
-}
-
-/**
  * Helper function to determine if a user has blog posts already.
+ *
+ * @param \Drupal\user\UserInterface|NULL $account
+ *   Blog post owner user, or NULL.
+ *
+ * @return string
+ *   Count of blog posts.
  */
-function _blog_post_exists($account) {
-  return (bool) Database::getConnection()->select('node_field_data', 'n')
-    ->fields('n', ['nid'])
-    ->condition('type', 'blog')
-    ->condition('uid', $account->id())
+function blog_post_counter($account = NULL) {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'blog_post')
     ->condition('status', 1)
-    ->range(0, 1)
-    ->addTag('node_access')
-    ->execute()
-    ->fetchField();
+    ->accessCheck(TRUE);
+  if ($account !== NULL) {
+    $query->condition('uid', $account->id());
+  }
+  return $query->count()
+    ->execute();
 }
 
 /**

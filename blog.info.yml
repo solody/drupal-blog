@@ -1,6 +1,6 @@
 name: Blog
-description: 'Enables multi-user blogs.'
-core_version_requirement: '^8.9 || ^9'
+description: "Enables multi-user blogs."
+core_version_requirement: ^9 || ^10
 type: module
 dependencies:
   - 'better_social_sharing_buttons:better_social_sharing_buttons'
